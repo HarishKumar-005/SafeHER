@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
  * Onboarding overlay shown on first launch. 
  * Explains SafeHer AR's core value propositions and privacy guarantees.
  */
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingOverlay(
     onDismiss: () -> Unit

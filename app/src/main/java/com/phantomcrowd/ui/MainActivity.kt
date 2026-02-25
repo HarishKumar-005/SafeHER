@@ -344,191 +344,191 @@ fun MainScreen(viewModel: MainViewModel) {
                     ImpactDashboardScreen(viewModel)
                 }
             }
-        }
         
-        // AR Navigation Overlay (Phase G - WOW MOMENT!)
-        if (showARNavigation && selectedAnchor != null) {
-            ARNavigationScreen(
-                targetAnchor = selectedAnchor!!,
-                userLocation = currentLocation,
-                onClose = { showARNavigation = false }
-            )
-        }
+            // AR Navigation Overlay (Phase G - WOW MOMENT!)
+            if (showARNavigation && selectedAnchor != null) {
+                ARNavigationScreen(
+                    targetAnchor = selectedAnchor!!,
+                    userLocation = currentLocation,
+                    onClose = { showARNavigation = false }
+                )
+            }
         
-        // Surface Anchor Placement Overlay (Phase I - Pokemon Go style!)
-        if (showSurfaceAnchorScreen) {
-            SurfaceAnchorScreen(
-                messageText = surfaceAnchorMessageText,
-                category = surfaceAnchorCategory,
-                severity = surfaceAnchorSeverity,
-                useCase = surfaceAnchorUseCase,
-                userLocation = currentLocation,
-                onAnchorPlaced = { anchor ->
-                    // Save anchor to Firestore
-                    scope.launch {
-                        try {
-                            // Convert Triple to FloatArray properly
-                            val offset = anchor.getOffset()
-                            val offsetArray = floatArrayOf(offset.first, offset.second, offset.third)
+            // Surface Anchor Placement Overlay (Phase I - Pokemon Go style!)
+            if (showSurfaceAnchorScreen) {
+                SurfaceAnchorScreen(
+                    messageText = surfaceAnchorMessageText,
+                    category = surfaceAnchorCategory,
+                    severity = surfaceAnchorSeverity,
+                    useCase = surfaceAnchorUseCase,
+                    userLocation = currentLocation,
+                    onAnchorPlaced = { anchor ->
+                        // Save anchor to Firestore
+                        scope.launch {
+                            try {
+                                // Convert Triple to FloatArray properly
+                                val offset = anchor.getOffset()
+                                val offsetArray = floatArrayOf(offset.first, offset.second, offset.third)
                             
-                            val normal = anchor.getSurfaceNormal()
-                            val normalArray = floatArrayOf(normal.first, normal.second, normal.third)
+                                val normal = anchor.getSurfaceNormal()
+                                val normalArray = floatArrayOf(normal.first, normal.second, normal.third)
                             
-                            val result = SurfaceAnchorManager.saveAnchor(
-                                messageText = anchor.messageText,
-                                category = anchor.category,
-                                location = android.location.Location("").apply {
-                                    latitude = anchor.latitude
-                                    longitude = anchor.longitude
-                                },
-                                anchorPose = com.google.ar.core.Pose(
-                                    offsetArray,
-                                    floatArrayOf(0f, 0f, 0f, 1f)
-                                ),
-                                planeType = com.google.ar.core.Plane.Type.valueOf(anchor.planeType),
-                                surfaceNormal = normalArray
-                            )
-                            result.onSuccess {
+                                val result = SurfaceAnchorManager.saveAnchor(
+                                    messageText = anchor.messageText,
+                                    category = anchor.category,
+                                    location = android.location.Location("").apply {
+                                        latitude = anchor.latitude
+                                        longitude = anchor.longitude
+                                    },
+                                    anchorPose = com.google.ar.core.Pose(
+                                        offsetArray,
+                                        floatArrayOf(0f, 0f, 0f, 1f)
+                                    ),
+                                    planeType = com.google.ar.core.Plane.Type.valueOf(anchor.planeType),
+                                    surfaceNormal = normalArray
+                                )
+                                result.onSuccess {
+                                    android.widget.Toast.makeText(
+                                        context, 
+                                        "✅ Message placed on surface!", 
+                                        android.widget.Toast.LENGTH_SHORT
+                                    ).show()
+                                    viewModel.updateLocation() // Refresh anchors
+                                }
+                                result.onFailure {
+                                    android.widget.Toast.makeText(
+                                        context, 
+                                        "❌ Failed to save: ${it.message}", 
+                                        android.widget.Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            } catch (e: Exception) {
+                                android.util.Log.e("SurfaceAnchor", "Failed to save anchor", e)
                                 android.widget.Toast.makeText(
                                     context, 
-                                    "✅ Message placed on surface!", 
-                                    android.widget.Toast.LENGTH_SHORT
-                                ).show()
-                                viewModel.updateLocation() // Refresh anchors
-                            }
-                            result.onFailure {
-                                android.widget.Toast.makeText(
-                                    context, 
-                                    "❌ Failed to save: ${it.message}", 
+                                    "❌ Error: ${e.message}", 
                                     android.widget.Toast.LENGTH_SHORT
                                 ).show()
                             }
-                        } catch (e: Exception) {
-                            android.util.Log.e("SurfaceAnchor", "Failed to save anchor", e)
-                            android.widget.Toast.makeText(
-                                context, 
-                                "❌ Error: ${e.message}", 
-                                android.widget.Toast.LENGTH_SHORT
-                            ).show()
                         }
+                        showSurfaceAnchorScreen = false
+                        surfaceAnchorMessageText = ""
+                        selectedTab = 0 // Go to Nearby tab
+                    },
+                    onCancel = {
+                        showSurfaceAnchorScreen = false
                     }
-                    showSurfaceAnchorScreen = false
-                    surfaceAnchorMessageText = ""
-                    selectedTab = 0 // Go to Nearby tab
-                },
-                onCancel = {
-                    showSurfaceAnchorScreen = false
-                }
-            )
-        }
+                )
+            }
         
-        // Network indicator (Phase E) - Overlay over entire scaffold
-        if (!viewModel.isOnline.collectAsState().value) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 40.dp, end = 16.dp),
-                contentAlignment = Alignment.TopEnd
-            ) {
-                Text(
-                    "⚠️ OFFLINE",
-                    color = Color.Red,
-                    fontWeight = FontWeight.Bold,
+            // Network indicator (Phase E) - Overlay over entire scaffold
+            if (!viewModel.isOnline.collectAsState().value) {
+                Box(
                     modifier = Modifier
-                        .background(Color.Black.copy(alpha = 0.8f), RoundedCornerShape(8.dp))
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                )
-            }
-        }
-        
-        // ═══════════ SOS FAB — Always visible (bottom-start) ═══════════
-        if (!showARNavigation && !showSurfaceAnchorScreen) {
-            FloatingActionButton(
-                onClick = { showSOSConfirmation = true },
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 16.dp)
-                    .size(56.dp),
-                containerColor = if (sosActive) DesignSystem.Colors.sosPressed else DesignSystem.Colors.sos,
-                contentColor = Color.White,
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text(
-                    if (sosActive) "⏹" else "🆘",
-                    fontSize = 22.sp,
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-        
-        // ═══════════ SOS Confirmation Dialog ═══════════
-        if (showSOSConfirmation) {
-            AlertDialog(
-                onDismissRequest = { showSOSConfirmation = false },
-                icon = { Text("🆘", fontSize = 40.sp) },
-                title = {
+                        .fillMaxSize()
+                        .padding(top = 40.dp, end = 16.dp),
+                    contentAlignment = Alignment.TopEnd
+                ) {
                     Text(
-                        if (sosActive) "Cancel SOS?" else "Activate Emergency SOS?",
+                        "⚠️ OFFLINE",
+                        color = Color.Red,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .background(Color.Black.copy(alpha = 0.8f), RoundedCornerShape(8.dp))
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
                     )
-                },
-                text = {
+                }
+            }
+        
+            // ═══════════ SOS FAB — Always visible (bottom-start) ═══════════
+            if (!showARNavigation && !showSurfaceAnchorScreen) {
+                FloatingActionButton(
+                    onClick = { showSOSConfirmation = true },
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 16.dp)
+                        .size(56.dp),
+                    containerColor = if (sosActive) DesignSystem.Colors.sosPressed else DesignSystem.Colors.sos,
+                    contentColor = Color.White,
+                    shape = RoundedCornerShape(16.dp)
+                ) {
                     Text(
-                        if (sosActive) {
-                            "Your SOS alert is active. Do you want to cancel it?"
-                        } else {
-                            "This will:\n• Vibrate your phone in SOS Morse pattern\n• Log this emergency with your location\n• Help authorities identify danger zones\n\nAre you sure?"
-                        },
+                        if (sosActive) "⏹" else "🆘",
+                        fontSize = 22.sp,
                         textAlign = TextAlign.Center
                     )
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            showSOSConfirmation = false
-                            if (sosActive) {
-                                // Cancel SOS
-                                com.phantomcrowd.data.SOSManager.cancelSOS(context)
-                                sosActive = false
-                                android.widget.Toast.makeText(context, "SOS cancelled", android.widget.Toast.LENGTH_SHORT).show()
-                            } else {
-                                // Trigger SOS
-                                val lat = currentLocation?.latitude ?: 0.0
-                                val lon = currentLocation?.longitude ?: 0.0
-                                com.phantomcrowd.data.SOSManager.triggerSOS(context, lat, lon, enableFakeCall = false)
-                                sosActive = true
-                                android.widget.Toast.makeText(context, "🆘 SOS Activated!", android.widget.Toast.LENGTH_LONG).show()
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (sosActive) DesignSystem.Colors.neutralMuted else DesignSystem.Colors.sos
-                        )
-                    ) {
-                        Text(
-                            if (sosActive) "Cancel SOS" else "Confirm SOS",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                },
-                dismissButton = {
-                    OutlinedButton(onClick = { showSOSConfirmation = false }) {
-                        Text("Go Back")
-                    }
                 }
-            )
-        }
+            }
         
-        // ═══════════ First-Launch Onboarding ═══════════
-        if (showOnboarding) {
-            OnboardingOverlay(
-                onDismiss = {
-                    showOnboarding = false
-                    onboardingPrefs.edit().putBoolean("onboarding_seen", true).apply()
-                }
-            )
+            // ═══════════ SOS Confirmation Dialog ═══════════
+            if (showSOSConfirmation) {
+                AlertDialog(
+                    onDismissRequest = { showSOSConfirmation = false },
+                    icon = { Text("🆘", fontSize = 40.sp) },
+                    title = {
+                        Text(
+                            if (sosActive) "Cancel SOS?" else "Activate Emergency SOS?",
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    },
+                    text = {
+                        Text(
+                            if (sosActive) {
+                                "Your SOS alert is active. Do you want to cancel it?"
+                            } else {
+                                "This will:\n• Vibrate your phone in SOS Morse pattern\n• Log this emergency with your location\n• Help authorities identify danger zones\n\nAre you sure?"
+                            },
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                showSOSConfirmation = false
+                                if (sosActive) {
+                                    // Cancel SOS
+                                    com.phantomcrowd.data.SOSManager.cancelSOS(context)
+                                    sosActive = false
+                                    android.widget.Toast.makeText(context, "SOS cancelled", android.widget.Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Trigger SOS
+                                    val lat = currentLocation?.latitude ?: 0.0
+                                    val lon = currentLocation?.longitude ?: 0.0
+                                    com.phantomcrowd.data.SOSManager.triggerSOS(context, lat, lon, enableFakeCall = false)
+                                    sosActive = true
+                                    android.widget.Toast.makeText(context, "🆘 SOS Activated!", android.widget.Toast.LENGTH_LONG).show()
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (sosActive) DesignSystem.Colors.neutralMuted else DesignSystem.Colors.sos
+                            )
+                        ) {
+                            Text(
+                                if (sosActive) "Cancel SOS" else "Confirm SOS",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    },
+                    dismissButton = {
+                        OutlinedButton(onClick = { showSOSConfirmation = false }) {
+                            Text("Go Back")
+                        }
+                    }
+                )
+            }
+        
+            // ═══════════ First-Launch Onboarding ═══════════
+            if (showOnboarding) {
+                OnboardingOverlay(
+                    onDismiss = {
+                        showOnboarding = false
+                        onboardingPrefs.edit().putBoolean("onboarding_seen", true).apply()
+                    }
+                )
+            }
         }
     }
 }
