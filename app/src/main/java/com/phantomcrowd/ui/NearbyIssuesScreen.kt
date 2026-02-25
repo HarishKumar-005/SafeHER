@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.phantomcrowd.data.*
+import com.phantomcrowd.data.RiskLevel
+import com.phantomcrowd.data.RiskScoring
 import com.phantomcrowd.ui.components.SeverityBadge
 import com.phantomcrowd.ui.theme.DesignSystem
 import kotlinx.coroutines.launch
@@ -559,8 +561,37 @@ fun EnhancedIssueCard(
                     }
                 }
                 
-                // Severity badge (new component)
-                SeverityBadge(severityName = anchor.severity)
+                // Severity badge + Risk pill
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    SeverityBadge(severityName = anchor.severity)
+                    
+                    // Risk pill — computed from severity, upvotes, and age
+                    val ageDays = (System.currentTimeMillis() - anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
+                    val riskLevel = RiskScoring.computeRiskLevel(
+                        severity = anchor.severity,
+                        upvotes = anchor.upvotes,
+                        ageDays = ageDays,
+                        distanceMeters = distance ?: 0.0
+                    )
+                    val riskColor = when (riskLevel) {
+                        RiskLevel.HIGH -> DesignSystem.Colors.severityHigh
+                        RiskLevel.MEDIUM -> DesignSystem.Colors.severityMedium
+                        RiskLevel.LOW -> DesignSystem.Colors.severityLow
+                    }
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(riskColor.copy(alpha = 0.15f))
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            riskLevel.shortLabel,
+                            style = DesignSystem.Typography.labelLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = riskColor
+                        )
+                    }
+                }
             }
             
             Spacer(modifier = Modifier.height(12.dp))

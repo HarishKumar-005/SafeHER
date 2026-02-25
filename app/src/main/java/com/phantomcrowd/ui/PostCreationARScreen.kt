@@ -44,7 +44,7 @@ import java.util.*
  */
 data class PostFormState(
     val currentStep: Int = 1,
-    val selectedUseCase: UseCase? = null,
+    val selectedUseCase: UseCase? = UseCase.WOMENS_SAFETY,
     val selectedCategory: Category? = null,
     val description: String = "",
     val latitude: Double = 0.0,
@@ -343,6 +343,38 @@ private fun Step1UseCaseSelection(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // SafeHer AR Banner
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = DesignSystem.Colors.secondary.copy(alpha = 0.1f)
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("🛡️", fontSize = 24.sp)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text(
+                        "SafeHer AR — Women Safety Mode",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = DesignSystem.Colors.secondary
+                    )
+                    Text(
+                        "Report anonymously. Your identity is protected.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = DesignSystem.Colors.neutralMuted
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Title
         Text(
             "What kind of issue are you reporting?",
@@ -351,7 +383,7 @@ private fun Step1UseCaseSelection(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            "Your report helps protect communities",
+            "Your report helps protect women in this area",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

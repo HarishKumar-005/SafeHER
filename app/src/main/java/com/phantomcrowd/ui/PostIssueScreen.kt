@@ -22,8 +22,8 @@ fun PostIssueScreen(
 ) {
     var messageText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var selectedCategory by remember { mutableStateOf("General") }
-    val categories = listOf("General", "Facility", "Safety", "Event", "Social")
+    var selectedCategory by remember { mutableStateOf("Safety") }
+    val categories = listOf("Safety", "Harassment", "Stalking", "General", "Facility", "Event")
     
     val currentLocation by viewModel.currentLocation.collectAsState()
     val context = LocalContext.current

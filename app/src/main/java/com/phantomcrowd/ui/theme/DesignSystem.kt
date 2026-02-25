@@ -25,40 +25,44 @@ object DesignSystem {
     // ═══════════════════════ COLORS ═══════════════════════
 
     object Colors {
-        // Brand
-        val primary          = Color(0xFF1767D1)
-        val onPrimary        = Color(0xFFFFFFFF)
-        val primaryContainer = Color(0xFFE6F0FF)
+        // Brand — Violet + Rose
+        val primary          = PrimaryViolet        // #7C3AED
+        val onPrimary        = OnPrimary            // #FFFFFF
+        val primaryContainer = PrimaryContainer     // #F3EAFF
 
-        val secondary        = Color(0xFF029F87)
-        val onSecondary      = Color(0xFFFFFFFF)
+        val secondary        = SecondaryRose        // #DB2777
+        val onSecondary      = OnSecondary          // #FFFFFF
 
         // Surfaces
-        val background       = Color(0xFFFAFBFD)
-        val surface          = Color(0xFFFFFFFF)
-        val surfaceVariant   = Color(0xFFF3F6FA)
-        val onSurface        = Color(0xFF0F1720)
-        val inverseOnSurface = Color(0xFFEBF2FF)
+        val background       = BackgroundLight      // #FFF5F7
+        val surface          = SurfaceWhite         // #FFFFFF
+        val surfaceVariant   = SurfaceVariantLight  // #FDF2F8
+        val onSurface        = OnSurfaceDark        // #1A0E2E
+        val inverseOnSurface = InverseOnSurface     // #F5EEFA
 
         // Feedback
-        val error            = Color(0xFFD93025)
-        val success          = Color(0xFF0F9D58)
-        val warning          = Color(0xFFFFB300)
+        val error            = ErrorRed             // #DC2626
+        val success          = SuccessGreen         // #16A34A
+        val warning          = WarningAmber         // #F59E0B
 
         // Severity
-        val severityHigh     = Color(0xFFD6453D)
-        val severityMedium   = Color(0xFFE67A00)
-        val severityLow      = Color(0xFF2E9B5D)
+        val severityHigh     = SeverityHigh         // #DC2626
+        val severityMedium   = SeverityMedium       // #F59E0B
+        val severityLow      = SeverityLow          // #16A34A
 
         // Heatmap
-        val heatmapRed       = Color(0xFFD32F2F)
-        val heatmapYellow    = Color(0xFFFBC02D)
-        val heatmapGreen     = Color(0xFF43A047)
+        val heatmapRed       = HeatmapRed           // #EF4444
+        val heatmapYellow    = HeatmapYellow        // #FBBF24
+        val heatmapGreen     = HeatmapGreen         // #22C55E
+
+        // SOS
+        val sos              = SOSRed               // #DC2626
+        val sosPressed       = SOSRedDark           // #B91C1C
 
         // Neutral / Utility
-        val neutralMuted     = Color(0xFF6B7280)
-        val outline          = Color(0xFFE6EEF8)
-        val link             = Color(0xFF0B63D8)
+        val neutralMuted     = NeutralMuted         // #6B7280
+        val outline          = OutlineLight         // #E8D5E8
+        val link             = LinkBlue             // #7C3AED
     }
 
     // ═══════════════════ TYPOGRAPHY ═══════════════════════

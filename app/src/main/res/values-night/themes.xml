@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SafeHerAR" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Dark mode inherits from the same base; Compose handles actual colors -->
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>
