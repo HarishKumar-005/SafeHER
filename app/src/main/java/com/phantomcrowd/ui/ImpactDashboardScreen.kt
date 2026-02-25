@@ -89,13 +89,13 @@ fun ImpactDashboardScreen(viewModel: MainViewModel) {
                 // ─── Header ─────────────────────────────────────────
                 item {
                     Text(
-                        "📊 Community Impact",
+                        "🛡️ SafeHer Impact",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        "Real-time statistics from your community",
+                        "How SafeHer AR is making your area safer for women",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -198,12 +198,12 @@ private fun OverallStatsCard(stats: ImpactStats) {
             ) {
                 StatItem(
                     value = stats.totalReports.toString(),
-                    label = "Issues Reported",
-                    icon = "📋"
+                    label = "Unsafe Areas Reported",
+                    icon = "🛡️"
                 )
                 StatItem(
                     value = stats.issuesFixed.toString(),
-                    label = "Issues Fixed",
+                    label = "Areas Secured",
                     icon = "✅"
                 )
             }
@@ -214,13 +214,13 @@ private fun OverallStatsCard(stats: ImpactStats) {
             ) {
                 StatItem(
                     value = stats.redZones.toString(),
-                    label = "Red Zones",
+                    label = "High Risk Zones",
                     icon = "🔴"
                 )
                 StatItem(
                     value = formatNumber(stats.estimatedReach),
-                    label = "Estimated Reach",
-                    icon = "👥"
+                    label = "Women Reached",
+                    icon = "👩"
                 )
             }
         }
@@ -314,9 +314,9 @@ private fun CategoryStatCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                QuickStat("Fixed", breakdown.fixed.toString(), DesignSystem.Colors.success)
+                QuickStat("Secured", breakdown.fixed.toString(), DesignSystem.Colors.success)
                 QuickStat("Pending", breakdown.pending.toString(), DesignSystem.Colors.warning)
-                QuickStat("In Progress", breakdown.inProgress.toString(), DesignSystem.Colors.primary)
+                QuickStat("Active", breakdown.inProgress.toString(), DesignSystem.Colors.primary)
                 QuickStat(
                     "Rate",
                     "${(breakdown.resolutionRate * 100).toInt()}%",
@@ -436,9 +436,9 @@ private fun YourContributionCard(stats: ImpactStats) {
 
             Text(
                 if (stats.totalReports > 0)
-                    "Keep reporting to make your community safer!"
+                    "Your reports are helping women stay safe. Keep going!"
                 else
-                    "Start reporting issues to make your community safer!",
+                    "Report unsafe areas to help protect women in your community.",
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -467,7 +467,7 @@ private fun YourContributionCard(stats: ImpactStats) {
 private fun SuccessStoriesSection(stories: List<SuccessStory>) {
     Column {
         Text(
-            "Success Stories",
+            "Safety Wins",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )

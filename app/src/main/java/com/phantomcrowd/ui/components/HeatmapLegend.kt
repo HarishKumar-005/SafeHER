@@ -18,11 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.phantomcrowd.ui.theme.DesignSystem
 
 /**
- * Legend component for the heatmap overlay on the map screen.
+ * Legend component for the Women Safety Risk Map.
  */
 @Composable
 fun HeatmapLegend(
@@ -33,17 +34,18 @@ fun HeatmapLegend(
             .clip(DesignSystem.Shapes.card)
             .background(DesignSystem.Colors.surface.copy(alpha = 0.92f))
             .padding(DesignSystem.Spacing.sm)
-            .semantics { contentDescription = "Heatmap legend: Red means 5 or more issues, Yellow means 2 to 4 issues, Green means 1 issue" }
+            .semantics { contentDescription = "Women Safety Risk Map legend: Red means high risk zone, Yellow means medium risk, Green means low risk" }
     ) {
         Text(
-            text = "Heatmap",
+            text = "🛡️ Safety Risk Map",
             style = DesignSystem.Typography.labelLarge,
+            fontWeight = FontWeight.Bold,
             color = DesignSystem.Colors.onSurface
         )
         Spacer(modifier = Modifier.height(DesignSystem.Spacing.xxs))
-        LegendRow(color = DesignSystem.Colors.heatmapRed,    label = "5+ reports")
-        LegendRow(color = DesignSystem.Colors.heatmapYellow, label = "2–4 reports")
-        LegendRow(color = DesignSystem.Colors.heatmapGreen,  label = "1 report")
+        LegendRow(color = DesignSystem.Colors.heatmapRed,    label = "High Risk Zone")
+        LegendRow(color = DesignSystem.Colors.heatmapYellow, label = "Medium Risk")
+        LegendRow(color = DesignSystem.Colors.heatmapGreen,  label = "Low Risk")
     }
 }
 

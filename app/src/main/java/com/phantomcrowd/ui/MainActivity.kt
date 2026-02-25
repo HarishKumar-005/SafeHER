@@ -31,9 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.phantomcrowd.ui.tabs.MapDiscoveryTab
 import com.phantomcrowd.ui.tabs.NavigationTab
+import com.phantomcrowd.ui.theme.DesignSystem
 import com.phantomcrowd.ui.theme.SafeHerARTheme
 import com.phantomcrowd.data.SurfaceAnchor
 import com.phantomcrowd.data.SurfaceAnchorManager
+import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -95,6 +97,10 @@ fun MainScreen(viewModel: MainViewModel) {
     var surfaceAnchorSeverity by remember { mutableStateOf("MEDIUM") }
     var surfaceAnchorUseCase by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
+    
+    // SOS state
+    var showSOSConfirmation by remember { mutableStateOf(false) }
+    var sosActive by remember { mutableStateOf(false) }
     
     val permissions = arrayOf(
         android.Manifest.permission.CAMERA,
@@ -169,7 +175,8 @@ fun MainScreen(viewModel: MainViewModel) {
             }
         }
     ) { paddingValues ->
-        Surface(modifier = Modifier.padding(paddingValues)) {
+        Box(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            // Main content
             when(selectedTab) {
                 0 -> NearbyIssuesScreen(viewModel)
                 1 -> PostCreationARScreen(
@@ -225,7 +232,7 @@ fun MainScreen(viewModel: MainViewModel) {
                             }
                         )
                         
-                        // Heatmap toggle button (top layer with zIndex)
+                        // Women Safety Risk Map toggle button (top layer with zIndex)
                         Button(
                             onClick = { viewModel.toggleHeatmap() },
                             modifier = Modifier
@@ -234,12 +241,12 @@ fun MainScreen(viewModel: MainViewModel) {
                                 .zIndex(10f), // Ensure button stays above map
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = if (viewModel.showHeatmap.collectAsState().value) 
-                                    Color.Red else Color.Gray
+                                    DesignSystem.Colors.secondary else DesignSystem.Colors.neutralMuted
                             )
                         ) {
                             Text(
-                                if (viewModel.showHeatmap.collectAsState().value) "🔥 Heatmap ON" 
-                                else "❄️ Heatmap OFF"
+                                if (viewModel.showHeatmap.collectAsState().value) "🛡️ Safety Risk Map ON" 
+                                else "🛡️ Safety Risk Map OFF"
                             )
                         }
                         
@@ -249,34 +256,34 @@ fun MainScreen(viewModel: MainViewModel) {
                                 .align(Alignment.TopEnd)
                                 .padding(top = 56.dp, end = 16.dp)
                                 .zIndex(10f) // Ensure legend stays above map
-                                .background(Color.White.copy(alpha = 0.9f), RoundedCornerShape(8.dp))
+                                .background(DesignSystem.Colors.surface.copy(alpha = 0.92f), RoundedCornerShape(8.dp))
                                 .padding(12.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("Heatmap Legend", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Color.Black)
+                            Text("🛡️ Risk Legend", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = DesignSystem.Colors.onSurface)
                             
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Box(modifier = Modifier
                                     .size(20.dp)
-                                    .background(Color.Red)
+                                    .background(DesignSystem.Colors.heatmapRed)
                                 )
-                                Text("5+ issues", fontSize = 10.sp, modifier = Modifier.padding(start = 8.dp), color = Color.Black)
+                                Text("High Risk Zone", fontSize = 10.sp, modifier = Modifier.padding(start = 8.dp), color = DesignSystem.Colors.onSurface)
                             }
                             
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Box(modifier = Modifier
                                     .size(20.dp)
-                                    .background(Color.Yellow)
+                                    .background(DesignSystem.Colors.heatmapYellow)
                                 )
-                                Text("2-4 issues", fontSize = 10.sp, modifier = Modifier.padding(start = 8.dp), color = Color.Black)
+                                Text("Medium Risk", fontSize = 10.sp, modifier = Modifier.padding(start = 8.dp), color = DesignSystem.Colors.onSurface)
                             }
                             
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Box(modifier = Modifier
                                     .size(20.dp)
-                                    .background(Color.Green)
+                                    .background(DesignSystem.Colors.heatmapGreen)
                                 )
-                                Text("1 issue", fontSize = 10.sp, modifier = Modifier.padding(start = 8.dp), color = Color.Black)
+                                Text("Low Risk", fontSize = 10.sp, modifier = Modifier.padding(start = 8.dp), color = DesignSystem.Colors.onSurface)
                             }
                         }
                     }
@@ -427,6 +434,86 @@ fun MainScreen(viewModel: MainViewModel) {
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                 )
             }
+        }
+        
+        // ═══════════ SOS FAB — Always visible (bottom-start) ═══════════
+        if (!showARNavigation && !showSurfaceAnchorScreen) {
+            FloatingActionButton(
+                onClick = { showSOSConfirmation = true },
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(start = 16.dp, bottom = 16.dp)
+                    .size(56.dp),
+                containerColor = if (sosActive) DesignSystem.Colors.sosPressed else DesignSystem.Colors.sos,
+                contentColor = Color.White,
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text(
+                    if (sosActive) "⏹" else "🆘",
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        
+        // ═══════════ SOS Confirmation Dialog ═══════════
+        if (showSOSConfirmation) {
+            AlertDialog(
+                onDismissRequest = { showSOSConfirmation = false },
+                icon = { Text("🆘", fontSize = 40.sp) },
+                title = {
+                    Text(
+                        if (sosActive) "Cancel SOS?" else "Activate Emergency SOS?",
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+                text = {
+                    Text(
+                        if (sosActive) {
+                            "Your SOS alert is active. Do you want to cancel it?"
+                        } else {
+                            "This will:\n• Vibrate your phone in SOS Morse pattern\n• Log this emergency with your location\n• Help authorities identify danger zones\n\nAre you sure?"
+                        },
+                        textAlign = TextAlign.Center
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showSOSConfirmation = false
+                            if (sosActive) {
+                                // Cancel SOS
+                                com.phantomcrowd.data.SOSManager.cancelSOS(context)
+                                sosActive = false
+                                android.widget.Toast.makeText(context, "SOS cancelled", android.widget.Toast.LENGTH_SHORT).show()
+                            } else {
+                                // Trigger SOS
+                                val lat = currentLocation?.latitude ?: 0.0
+                                val lon = currentLocation?.longitude ?: 0.0
+                                com.phantomcrowd.data.SOSManager.triggerSOS(context, lat, lon, enableFakeCall = false)
+                                sosActive = true
+                                android.widget.Toast.makeText(context, "🆘 SOS Activated!", android.widget.Toast.LENGTH_LONG).show()
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (sosActive) DesignSystem.Colors.neutralMuted else DesignSystem.Colors.sos
+                        )
+                    ) {
+                        Text(
+                            if (sosActive) "Cancel SOS" else "Confirm SOS",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                },
+                dismissButton = {
+                    OutlinedButton(onClick = { showSOSConfirmation = false }) {
+                        Text("Go Back")
+                    }
+                }
+            )
         }
     }
 }

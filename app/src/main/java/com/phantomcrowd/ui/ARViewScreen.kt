@@ -36,11 +36,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.phantomcrowd.data.AnchorData
+import com.phantomcrowd.data.RiskLevel
+import com.phantomcrowd.data.RiskScoring
 import com.phantomcrowd.ui.theme.DesignSystem
 import com.phantomcrowd.utils.BearingCalculator
 import com.phantomcrowd.utils.Logger
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import android.speech.tts.TextToSpeech
+import java.util.Locale
 import kotlin.math.abs
 import androidx.compose.animation.core.*
 
@@ -67,6 +71,24 @@ fun ARViewScreen(
     val anchors by viewModel.anchors.collectAsState()
     val userLocation by viewModel.currentLocation.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    
+    // First-time AR tutorial
+    val prefs = remember { context.getSharedPreferences("safeher_ar_prefs", Context.MODE_PRIVATE) }
+    var showTutorial by remember { mutableStateOf(!prefs.getBoolean("ar_tutorial_seen", false)) }
+    
+    // TTS for HIGH risk spoken alerts
+    var tts by remember { mutableStateOf<TextToSpeech?>(null) }
+    val spokenAlertIds = remember { mutableSetOf<String>() }
+    
+    DisposableEffect(Unit) {
+        val engine = TextToSpeech(context) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                tts?.language = Locale.US
+            }
+        }
+        tts = engine
+        onDispose { engine.shutdown() }
+    }
     
     // Compass heading - THROTTLED to prevent excessive recompositions
     var deviceHeading by remember { mutableFloatStateOf(0f) }
@@ -283,7 +305,7 @@ fun ARViewScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "📍 ${anchors.size} issues nearby",
+                text = "🛡️ ${anchors.size} safety reports nearby",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
@@ -300,7 +322,7 @@ fun ARViewScreen(
             Spacer(modifier = Modifier.height(8.dp))
             
             Text(
-                text = "👆 Point camera towards issues to see labels",
+                text = "👆 Point camera at your surroundings to reveal safety labels",
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center
@@ -329,6 +351,71 @@ fun ARViewScreen(
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(color = Color.White)
+            }
+        }
+        
+        // First-time AR tutorial overlay
+        if (showTutorial) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.85f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(32.dp)
+                        .background(DesignSystem.Colors.surface, RoundedCornerShape(20.dp))
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text("🛡️", fontSize = 48.sp)
+                    Text(
+                        "SafeHer AR View",
+                        style = DesignSystem.Typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = DesignSystem.Colors.onSurface
+                    )
+                    Text(
+                        "• Point your camera to see safety reports around you\n" +
+                        "• \u200B🔴 Red labels = urgent safety alerts\n" +
+                        "• \u200B🟡 Yellow labels = medium risk\n" +
+                        "• \u200B🟢 Green labels = low risk\n" +
+                        "• Haptic vibration alerts for HIGH risk zones",
+                        style = DesignSystem.Typography.bodyMedium,
+                        color = DesignSystem.Colors.neutralMuted
+                    )
+                    Button(
+                        onClick = {
+                            showTutorial = false
+                            prefs.edit().putBoolean("ar_tutorial_seen", true).apply()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = DesignSystem.Colors.primary
+                        )
+                    ) {
+                        Text("Got it!", color = DesignSystem.Colors.onPrimary)
+                    }
+                }
+            }
+        }
+        
+        // Haptic + TTS alert for HIGH risk anchors entering view
+        LaunchedEffect(anchorData) {
+            anchorData.filter { data ->
+                val ageDays = (System.currentTimeMillis() - data.anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
+                val level = RiskScoring.computeRiskLevel(data.anchor.severity, data.anchor.upvotes, ageDays, data.distance.toDouble())
+                level == RiskLevel.HIGH && data.anchor.id !in spokenAlertIds && data.distance < 200
+            }.take(1).forEach { data ->
+                haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+                spokenAlertIds.add(data.anchor.id)
+                tts?.speak(
+                    "Caution. High risk safety alert ${data.distance.toInt()} meters ahead.",
+                    TextToSpeech.QUEUE_ADD,
+                    null,
+                    data.anchor.id
+                )
             }
         }
     }
@@ -490,16 +577,34 @@ private fun IssueLabel(
 
                 Spacer(modifier = Modifier.height(3.dp))
 
-                // Bottom row: distance + severity badge
+                // Bottom row: distance + risk level + severity badge
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
                         text = distanceText,
                         color = Color.White.copy(alpha = 0.65f),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium
+                    )
+
+                    // Risk level pill
+                    val ageDays = (System.currentTimeMillis() - anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
+                    val riskLevel = RiskScoring.computeRiskLevel(anchor.severity, anchor.upvotes, ageDays, distance.toDouble())
+                    val riskColor = when (riskLevel) {
+                        RiskLevel.HIGH -> Color(0xFFEF4444)
+                        RiskLevel.MEDIUM -> Color(0xFFFBBF24)
+                        RiskLevel.LOW -> Color(0xFF22C55E)
+                    }
+                    Text(
+                        text = riskLevel.shortLabel,
+                        color = riskColor,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .background(riskColor.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
+                            .padding(horizontal = 4.dp, vertical = 1.dp)
                     )
 
                     // Severity badge
@@ -516,6 +621,15 @@ private fun IssueLabel(
                             )
                             .padding(horizontal = 5.dp, vertical = 1.dp)
                     )
+
+                    // Report count
+                    if (anchor.upvotes > 0) {
+                        Text(
+                            text = "${anchor.upvotes}✓",
+                            color = Color.White.copy(alpha = 0.5f),
+                            fontSize = 9.sp
+                        )
+                    }
                 }
             }
         }
