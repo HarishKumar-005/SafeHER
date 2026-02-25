@@ -35,6 +35,7 @@ import com.phantomcrowd.ui.theme.DesignSystem
 import com.phantomcrowd.ui.theme.SafeHerARTheme
 import com.phantomcrowd.data.SurfaceAnchor
 import com.phantomcrowd.data.SurfaceAnchorManager
+import com.phantomcrowd.ui.components.OnboardingOverlay
 import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.launch
 
@@ -101,6 +102,10 @@ fun MainScreen(viewModel: MainViewModel) {
     // SOS state
     var showSOSConfirmation by remember { mutableStateOf(false) }
     var sosActive by remember { mutableStateOf(false) }
+    
+    // Onboarding (first launch)
+    val onboardingPrefs = remember { context.getSharedPreferences("safeher_prefs", Context.MODE_PRIVATE) }
+    var showOnboarding by remember { mutableStateOf(!onboardingPrefs.getBoolean("onboarding_seen", false)) }
     
     val permissions = arrayOf(
         android.Manifest.permission.CAMERA,
@@ -512,6 +517,16 @@ fun MainScreen(viewModel: MainViewModel) {
                     OutlinedButton(onClick = { showSOSConfirmation = false }) {
                         Text("Go Back")
                     }
+                }
+            )
+        }
+        
+        // ═══════════ First-Launch Onboarding ═══════════
+        if (showOnboarding) {
+            OnboardingOverlay(
+                onDismiss = {
+                    showOnboarding = false
+                    onboardingPrefs.edit().putBoolean("onboarding_seen", true).apply()
                 }
             )
         }
