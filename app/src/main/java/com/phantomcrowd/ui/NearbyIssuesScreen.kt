@@ -748,7 +748,7 @@ fun EnhancedIssueCard(
                                     append("🚨 ${useCase?.icon ?: "📍"} Issue Alert\n\n")
                                     append("${anchor.messageText}\n\n")
                                     append("📍 Location: ${anchor.latitude}, ${anchor.longitude}\n")
-                                    append("Report via Phantom Crowd")
+                                    append("Report via SafeHer AR")
                                 }
                                 val sendIntent = android.content.Intent().apply {
                                     action = android.content.Intent.ACTION_SEND

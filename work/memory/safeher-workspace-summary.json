@@ -1,0 +1,211 @@
+{
+    "projectName": "SafeHer AR (formerly Phantom Crowd)",
+    "scanTimestamp": "2026-02-25T23:01:31+05:30",
+    "packageName": "com.phantomcrowd",
+    "applicationId": "com.phantomcrowd",
+    "gradleModules": [
+        "app"
+    ],
+    "compileSdk": 35,
+    "minSdk": 24,
+    "targetSdk": 35,
+    "buildSystem": "Gradle (Groovy DSL)",
+    "uiFramework": "Jetpack Compose + Material3",
+    "firebaseConfigPath": "app/google-services.json",
+    "arEntryPoints": {
+        "ARCoreManager": "app/src/main/java/com/phantomcrowd/ar/ARCoreManager.kt",
+        "ARViewScreen": "app/src/main/java/com/phantomcrowd/ui/ARViewScreen.kt",
+        "ARNavigationScreen": "app/src/main/java/com/phantomcrowd/ui/ARNavigationScreen.kt",
+        "SurfaceAnchorScreen": "app/src/main/java/com/phantomcrowd/ui/SurfaceAnchorScreen.kt",
+        "PostCreationARScreen": "app/src/main/java/com/phantomcrowd/ui/PostCreationARScreen.kt",
+        "GeospatialAnchorManager": "app/src/main/java/com/phantomcrowd/ar/GeospatialAnchorManager.kt",
+        "CloudAnchorSyncManager": "app/src/main/java/com/phantomcrowd/ar/CloudAnchorSyncManager.kt",
+        "ARModelRenderer": "app/src/main/java/com/phantomcrowd/ar/ARModelRenderer.kt",
+        "ARWallRenderer": "app/src/main/java/com/phantomcrowd/ar/ARWallRenderer.kt",
+        "VoiceGuidanceManager": "app/src/main/java/com/phantomcrowd/ar/VoiceGuidanceManager.kt"
+    },
+    "uiScreens": {
+        "MainActivity": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/MainActivity.kt",
+            "tabs": [
+                "Nearby",
+                "Post",
+                "Map",
+                "Nav",
+                "AR",
+                "Impact"
+            ],
+            "theme": "PhantomCrowdTheme"
+        },
+        "NearbyIssuesScreen": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/NearbyIssuesScreen.kt",
+            "components": [
+                "FilterRow",
+                "EnhancedIssueCard",
+                "LoadingCardSkeleton",
+                "EmptyState"
+            ]
+        },
+        "PostCreationARScreen": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/PostCreationARScreen.kt"
+        },
+        "PostIssueScreen": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/PostIssueScreen.kt",
+            "categories": [
+                "General",
+                "Facility",
+                "Safety",
+                "Event",
+                "Social"
+            ]
+        },
+        "ARViewScreen": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/ARViewScreen.kt",
+            "components": [
+                "IssueLabel",
+                "AnchorDisplayData",
+                "VisibleAnchor"
+            ]
+        },
+        "ImpactDashboardScreen": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/ImpactDashboardScreen.kt",
+            "components": [
+                "OverallStatsCard",
+                "CategoryStatCard",
+                "YourContributionCard",
+                "SuccessStoriesSection"
+            ]
+        },
+        "MapDiscoveryTab": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/tabs/MapDiscoveryTab.kt"
+        },
+        "NavigationTab": {
+            "file": "app/src/main/java/com/phantomcrowd/ui/tabs/NavigationTab.kt"
+        }
+    },
+    "uiComponents": {
+        "PBottomNav": "app/src/main/java/com/phantomcrowd/ui/components/PBottomNav.kt",
+        "PTopBar": "app/src/main/java/com/phantomcrowd/ui/components/PTopBar.kt",
+        "MessageCard": "app/src/main/java/com/phantomcrowd/ui/components/MessageCard.kt",
+        "SeverityBadge": "app/src/main/java/com/phantomcrowd/ui/components/SeverityBadge.kt",
+        "PCard": "app/src/main/java/com/phantomcrowd/ui/components/PCard.kt",
+        "PChip": "app/src/main/java/com/phantomcrowd/ui/components/PChip.kt",
+        "PDialog": "app/src/main/java/com/phantomcrowd/ui/components/PDialog.kt",
+        "PToast": "app/src/main/java/com/phantomcrowd/ui/components/PToast.kt",
+        "HeatmapLegend": "app/src/main/java/com/phantomcrowd/ui/components/HeatmapLegend.kt",
+        "MiniMapOverlay": "app/src/main/java/com/phantomcrowd/ui/components/MiniMapOverlay.kt",
+        "DirectionArrowOverlay": "app/src/main/java/com/phantomcrowd/ui/components/DirectionArrowOverlay.kt"
+    },
+    "dataLayer": {
+        "AnchorData": {
+            "file": "app/src/main/java/com/phantomcrowd/data/AnchorData.kt",
+            "fields": [
+                "id",
+                "latitude",
+                "longitude",
+                "altitude",
+                "messageText",
+                "timestamp",
+                "category",
+                "rotationX/Y/Z",
+                "geohash",
+                "cloudAnchorId",
+                "upvotes",
+                "wallAnchorId",
+                "useCase",
+                "useCaseCategory",
+                "severity",
+                "locationName",
+                "nearbyIssueCount",
+                "status"
+            ]
+        },
+        "AnchorRepository": "app/src/main/java/com/phantomcrowd/data/AnchorRepository.kt",
+        "FirebaseAnchorManager": "app/src/main/java/com/phantomcrowd/data/FirebaseAnchorManager.kt",
+        "LocalStorageManager": "app/src/main/java/com/phantomcrowd/data/LocalStorageManager.kt",
+        "GeofenceManager": "app/src/main/java/com/phantomcrowd/data/GeofenceManager.kt",
+        "SurfaceAnchor": "app/src/main/java/com/phantomcrowd/data/SurfaceAnchor.kt",
+        "SurfaceAnchorManager": "app/src/main/java/com/phantomcrowd/data/SurfaceAnchorManager.kt",
+        "UseCase": "app/src/main/java/com/phantomcrowd/data/UseCase.kt",
+        "ImpactData": "app/src/main/java/com/phantomcrowd/data/ImpactData.kt"
+    },
+    "useCaseEnum": {
+        "values": [
+            "WOMENS_SAFETY",
+            "ACCESSIBILITY",
+            "LABOR_RIGHTS",
+            "FACILITIES",
+            "ENVIRONMENTAL",
+            "CIVIL_RESISTANCE"
+        ],
+        "womensSafetySubcategories": [
+            "ASSAULT",
+            "HARASSMENT",
+            "UNSAFE_AREA",
+            "NO_EMERGENCY_HELP",
+            "STALKING",
+            "OTHER"
+        ]
+    },
+    "severityEnum": [
+        "URGENT",
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+    ],
+    "themeFiles": {
+        "Color.kt": "app/src/main/java/com/phantomcrowd/ui/theme/Color.kt",
+        "Theme.kt": "app/src/main/java/com/phantomcrowd/ui/theme/Theme.kt",
+        "DesignSystem.kt": "app/src/main/java/com/phantomcrowd/ui/theme/DesignSystem.kt",
+        "Type.kt": "app/src/main/java/com/phantomcrowd/ui/theme/Type.kt",
+        "themes.xml": "app/src/main/res/values/themes.xml",
+        "colors.xml": "app/src/main/res/values/colors.xml"
+    },
+    "layoutFiles": {
+        "view_ar_label.xml": "app/src/main/res/layout/view_ar_label.xml"
+    },
+    "stringResources": {
+        "strings.xml": "app/src/main/res/values/strings.xml",
+        "currentAppName": "Phantom Crowd"
+    },
+    "existingTests": {
+        "unit": [
+            "app/src/test/java/com/phantomcrowd/AnchorDataTest.kt",
+            "app/src/test/java/com/phantomcrowd/AnchorRepositoryTest.kt"
+        ],
+        "testRunner": "androidx.test.runner.AndroidJUnitRunner",
+        "testDependencies": [
+            "junit:4.13.2",
+            "mockito-core:5.8.0",
+            "mockito-kotlin:5.2.1",
+            "coroutines-test:1.7.3",
+            "turbine:1.0.0",
+            "espresso-core:3.5.1",
+            "compose-test-junit4"
+        ]
+    },
+    "utils": {
+        "HeatmapRenderer": "app/src/main/java/com/phantomcrowd/utils/HeatmapRenderer.kt",
+        "GPSUtils": "app/src/main/java/com/phantomcrowd/utils/GPSUtils.kt",
+        "GeohashingUtility": "app/src/main/java/com/phantomcrowd/utils/GeohashingUtility.kt",
+        "NetworkHelper": "app/src/main/java/com/phantomcrowd/utils/NetworkHelper.kt",
+        "PermissionHelper": "app/src/main/java/com/phantomcrowd/utils/PermissionHelper.kt",
+        "OfflineMapCache": "app/src/main/java/com/phantomcrowd/utils/OfflineMapCache.kt",
+        "BearingCalculator": "app/src/main/java/com/phantomcrowd/utils/BearingCalculator.kt",
+        "MinimapCalculator": "app/src/main/java/com/phantomcrowd/utils/MinimapCalculator.kt",
+        "Logger": "app/src/main/java/com/phantomcrowd/utils/Logger.kt",
+        "Constants": "app/src/main/java/com/phantomcrowd/utils/Constants.kt",
+        "DebugConfig": "app/src/main/java/com/phantomcrowd/utils/DebugConfig.kt",
+        "ContentModerationHelper": "app/src/main/java/com/phantomcrowd/ai/ContentModerationHelper.kt"
+    },
+    "technicalRisks": [
+        "Package name remains com.phantomcrowd — applicationId change would break Firebase config",
+        "ARCore/SceneView 2.2.1 has known camera session management issues (from previous conversations)",
+        "No dark mode theme currently exists — only light scheme",
+        "PostIssueScreen.kt has separate simpler category list (General/Facility/Safety/Event/Social) vs UseCase enum",
+        "No SOS functionality exists — needs full implementation",
+        "No SafeRoute implementation — needs routing logic to avoid heatmap red zones",
+        "No riskScore field in AnchorData — needs to be added",
+        "HeatmapRenderer uses simple density count, not risk-score-based weighting"
+    ]
+}

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.phantomcrowd.ui.tabs.MapDiscoveryTab
 import com.phantomcrowd.ui.tabs.NavigationTab
-import com.phantomcrowd.ui.theme.PhantomCrowdTheme
+import com.phantomcrowd.ui.theme.SafeHerARTheme
 import com.phantomcrowd.data.SurfaceAnchor
 import com.phantomcrowd.data.SurfaceAnchorManager
 import kotlinx.coroutines.launch
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
         createNotificationChannel()
         
         setContent {
-            PhantomCrowdTheme {
+            SafeHerARTheme {
                 MainScreen(viewModel)
             }
         }
@@ -56,10 +56,10 @@ class MainActivity : ComponentActivity() {
     
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Phantom Crowd Geofencing"
+            val name = "SafeHer AR Alerts"
             val descriptionText = "Notifications for nearby issues"
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel("phantom_crowd_geofence", name, importance).apply {
+            val channel = NotificationChannel("safeher_ar_geofence", name, importance).apply {
                 description = descriptionText
             }
             

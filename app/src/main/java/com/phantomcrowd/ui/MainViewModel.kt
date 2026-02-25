@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Main ViewModel for the Phantom Crowd app.
+ * Main ViewModel for the SafeHer AR app.
  * Manages location state, anchor data, and coordinates between UI screens.
  */
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -152,7 +152,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             .launchIn(viewModelScope)
 
         // One-time migration: backfill status/severity on existing surface_anchors
-        val prefs = application.getSharedPreferences("phantom_crowd_prefs", 0)
+        val prefs = application.getSharedPreferences("safeher_ar_prefs", 0)
         if (!prefs.getBoolean("backfill_surface_anchors_done", false)) {
             viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
                 val updated = firebaseManager.backfillSurfaceAnchors()

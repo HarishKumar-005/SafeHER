@@ -21,7 +21,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PhantomCrowd"
+        android:theme="@style/Theme.SafeHerAR"
         tools:targetApi="31">
         
         <!-- ARCore Metadata -->
@@ -37,7 +37,7 @@
             android:name=".ui.MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|smallestScreenSize|uiMode"
-            android:theme="@style/Theme.PhantomCrowd">
+            android:theme="@style/Theme.SafeHerAR">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

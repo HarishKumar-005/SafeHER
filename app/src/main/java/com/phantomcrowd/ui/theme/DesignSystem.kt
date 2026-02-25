@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
- * Phantom Crowd Design System — Light-first, trust-focused tokens.
+ * SafeHer AR Design System — Safety-focused, trust-first tokens.
  *
  * All colors, typography, shapes, spacing, elevation, and motion tokens
  * are centralised here. Every Compose component in the app should

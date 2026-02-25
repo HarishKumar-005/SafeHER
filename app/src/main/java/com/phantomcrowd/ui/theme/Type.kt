@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /**
- * Typography for Phantom Crowd. Uses system default (Roboto) as the
+ * Typography for SafeHer AR. Uses system default (Roboto) as the
  * primary font family, with the sizes specified in the design system.
  * Inter is preferred but requires bundled font files; Roboto is the
  * safe system fallback.

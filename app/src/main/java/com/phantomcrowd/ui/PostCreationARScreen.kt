@@ -306,7 +306,7 @@ fun PostCreationARScreen(
                                 append("🚨 ${formState.selectedUseCase?.icon ?: ""} ${formState.selectedUseCase?.label ?: "Issue"} Alert\n\n")
                                 append("${formState.description}\n\n")
                                 append("📍 Location: ${formState.locationName}\n")
-                                append("Report anonymously at Phantom Crowd app")
+                                append("Report anonymously at SafeHer AR app")
                             }
                             val sendIntent = android.content.Intent().apply {
                                 action = android.content.Intent.ACTION_SEND

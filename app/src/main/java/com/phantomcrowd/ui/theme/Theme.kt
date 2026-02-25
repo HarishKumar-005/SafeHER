@@ -13,7 +13,7 @@ import androidx.core.view.WindowCompat
  * Light-first branded color scheme.
  * Dynamic color is disabled so the app always shows the curated palette.
  */
-private val PhantomLightColorScheme = lightColorScheme(
+private val SafeHerLightColorScheme = lightColorScheme(
     primary = PrimaryBlue,
     onPrimary = OnPrimary,
     primaryContainer = PrimaryContainer,
@@ -32,10 +32,10 @@ private val PhantomLightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun PhantomCrowdTheme(
+fun SafeHerARTheme(
     content: @Composable () -> Unit
 ) {
-    val colorScheme = PhantomLightColorScheme
+    val colorScheme = SafeHerLightColorScheme
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {

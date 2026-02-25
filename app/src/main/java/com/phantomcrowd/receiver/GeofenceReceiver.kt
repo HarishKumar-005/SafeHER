@@ -14,7 +14,7 @@ class GeofenceReceiver : BroadcastReceiver() {
     
     companion object {
         private const val TAG = "GeofenceReceiver"
-        private const val CHANNEL_ID = "phantom_crowd_geofence"
+        private const val CHANNEL_ID = "safeher_ar_geofence"
     }
     
     override fun onReceive(context: Context, intent: Intent) {

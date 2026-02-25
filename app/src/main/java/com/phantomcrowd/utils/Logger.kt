@@ -11,12 +11,12 @@ import android.util.Log
  *   Logger.e(Logger.Category.GPS, "Failed to get location", exception)
  * 
  * Logcat filters:
- *   - "PhantomCrowd" for all app logs
- *   - "PhantomCrowd-AR" for AR-specific logs
- *   - "PhantomCrowd-GPS" for location logs
+ *   - "SafeHerAR" for all app logs
+ *   - "SafeHerAR-AR" for AR-specific logs
+ *   - "SafeHerAR-GPS" for location logs
  */
 object Logger {
-    private const val BASE_TAG = "PhantomCrowd"
+    private const val BASE_TAG = "SafeHerAR"
 
     /**
      * Log categories for filtering in Logcat.

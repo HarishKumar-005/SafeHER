@@ -49,7 +49,7 @@ import androidx.lifecycle.repeatOnLifecycle
  * 5. Use DisplayMetrics for correct screen coordinates
  * 6. Handle edge cases (small views, null locations)
  * 
- * Author: Phantom Crowd Team
+ * Author: SafeHer AR Team
  * Version: 2.0 (Fixed for production)
  */
 
