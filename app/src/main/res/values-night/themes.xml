@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+        SafeHer AR uses a SINGLE unified feminine theme.
+        Night mode overrides the window to #FFF7FA (same as day)
+        so Compose content never sits on a black background.
+    -->
     <style name="Theme.SafeHerAR" parent="android:Theme.Material.Light.NoActionBar">
-        <!-- Dark mode inherits from the same base; Compose handles actual colors -->
-        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowBackground">#FFF7FA</item>
+        <item name="android:statusBarColor">#FFF7FA</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFF7FA</item>
     </style>
 </resources>

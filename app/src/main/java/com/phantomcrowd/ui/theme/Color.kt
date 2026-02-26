@@ -2,79 +2,87 @@ package com.phantomcrowd.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// ═══════════════════ SafeHer AR – Light Palette ════════════════════
-// Feminine-accessible: Violet primary + Rose accent
-// All text-on-color pairs verified ≥ 4.5:1 (body) / ≥ 3:1 (large text)
+// ═══════════════════ SafeHer AR – Unified Feminine Theme ════════════════════
+// Single soft neutral palette — works in all lighting conditions
+// No pure white backgrounds, no dark aggressive colors
+// Emotionally safe, calm, professional
 
-// Primary – Deep Violet
-val PrimaryViolet       = Color(0xFF7C3AED)   // Primary actions, FABs
-val OnPrimary           = Color(0xFFFFFFFF)   // White text on violet — 7.2:1 ✓
-val PrimaryContainer    = Color(0xFFF3EAFF)   // Light violet tint for cards
+// ─── Primary Brand: Mauve Pink ───
+val PrimaryViolet       = Color(0xFFC87FAE)   // Primary brand
+val OnPrimary           = Color(0xFFFFFFFF)   // White text on primary
+val PrimaryContainer    = Color(0xFFF9E4EF)   // Soft pink tint (selected state)
 
-// Secondary – Rose / Magenta
-val SecondaryRose       = Color(0xFFDB2777)   // Accents, SOS, danger highlights
-val OnSecondary         = Color(0xFFFFFFFF)   // White text on rose  — 5.6:1 ✓
+// ─── Secondary Accent ───
+val SecondaryRose       = Color(0xFFE7B7D3)   // Secondary accent
+val OnSecondary         = Color(0xFF0F1724)   // Dark text on secondary
 
-// Tertiary – Teal (safe / success)
-val TertiaryTeal        = Color(0xFF0D9488)   // Success, safe-route, resolved
+// ─── Tertiary: Teal Support ───
+val TertiaryTeal        = Color(0xFF3FB28F)   // Success / safe indicators
 
-// Surface – Light
-val BackgroundLight     = Color(0xFFFFF5F7)   // Warm pink-tinted background
-val SurfaceWhite        = Color(0xFFFFFFFF)   // Cards, sheets
-val SurfaceVariantLight = Color(0xFFFDF2F8)   // Subtle pink surface
-val OnSurfaceDark       = Color(0xFF1A0E2E)   // Dark text on light — 15.8:1 ✓
-val InverseOnSurface    = Color(0xFFF5EEFA)   // Light text on inverse
+// ─── Surfaces ───
+val BackgroundLight     = Color(0xFFFFF7FA)   // Soft warm off-white bg
+val SurfaceWhite        = Color(0xFFFFFFFF)   // Card surface
+val SurfaceVariantLight = Color(0xFFF9E4EF)   // Selected card fill
+val OnSurfaceDark       = Color(0xFF0F1724)   // Primary text
+val InverseOnSurface    = Color(0xFFFFF7FA)   // Inverse text
 
-// Feedback
-val ErrorRed            = Color(0xFFDC2626)   // Errors, SOS active
-val SuccessGreen        = Color(0xFF16A34A)   // Resolved, safe
-val WarningAmber        = Color(0xFFF59E0B)   // Caution, medium risk
+// ─── Feedback ───
+val ErrorRed            = Color(0xFFE34F5A)   // Danger / SOS
+val SuccessGreen        = Color(0xFF3FB28F)   // Success
+val WarningAmber        = Color(0xFFF6C85F)   // Caution
 
-// Severity (consistent with risk scoring)
-val SeverityHigh        = Color(0xFFDC2626)   // HIGH risk — red
-val SeverityMedium      = Color(0xFFF59E0B)   // MED risk  — amber
-val SeverityLow         = Color(0xFF16A34A)   // LOW risk  — green
+// ─── Severity ───
+val SeverityHigh        = Color(0xFFE34F5A)   // HIGH — coral
+val SeverityMedium      = Color(0xFFF6C85F)   // MEDIUM — warm yellow
+val SeverityLow         = Color(0xFF3FB28F)   // LOW — teal
 
-// Heatmap
-val HeatmapRed          = Color(0xFFEF4444)   // Danger zones
-val HeatmapYellow       = Color(0xFFFBBF24)   // Caution zones
-val HeatmapGreen        = Color(0xFF22C55E)   // Safe zones
+// ─── Heatmap ───
+val HeatmapRed          = Color(0xFFE34F5A)
+val HeatmapYellow       = Color(0xFFF6C85F)
+val HeatmapGreen        = Color(0xFF3FB28F)
 
-// Neutral / Utility
-val NeutralMuted        = Color(0xFF6B7280)   // Secondary text — 5.3:1 on white ✓
-val OutlineLight        = Color(0xFFE8D5E8)   // Soft violet border
-val LinkBlue            = Color(0xFF7C3AED)   // Links match primary
+// ─── Neutral / Utility ───
+val NeutralMuted        = Color(0xFF6B7280)   // Secondary text
+val OutlineLight        = Color(0xFFEAE6E9)   // Subtle dividers
+val LinkBlue            = Color(0xFFC87FAE)   // Links match primary
 
-// SOS specific
-val SOSRed              = Color(0xFFDC2626)   // SOS button
-val SOSRedDark          = Color(0xFFB91C1C)   // SOS pressed state
+// ─── SOS ───
+val SOSRed              = Color(0xFFE34F5A)
+val SOSRedDark          = Color(0xFFCB3A45)
 
-// ═══════════════════ SafeHer AR – Dark Palette ═════════════════════
-// Dark mode: deeper backgrounds, lighter accents, same contrast targets
+// ─── Navigation Surface ───
+val NavSurface          = Color(0xFFFFF7FA)   // Soft off-white nav bar
 
-val PrimaryVioletDark       = Color(0xFFB68AFF)   // Lighter violet for dark bg — 6.1:1 ✓
-val OnPrimaryDark           = Color(0xFF1A0E2E)   // Dark text on light violet
-val PrimaryContainerDark    = Color(0xFF2D1F4E)   // Deep violet container
+// ─── Soft Tinted Cards (Impact screen) ───
+val SoftPinkCard        = Color(0xFFFFF0F5)   // Very soft pink fill
+val SoftTealCard        = Color(0xFFEDF8F4)   // Very soft teal fill
 
-val SecondaryRoseDark       = Color(0xFFF472B6)   // Lighter rose for dark bg — 5.1:1 ✓
-val OnSecondaryDark         = Color(0xFF1A0E2E)   // Dark text
+// ═══════════════════ Dark Palette ═════════════════════
+// Matching dark mode with same emotional feel
 
-val TertiaryTealDark        = Color(0xFF5EEAD4)   // Light teal for dark bg
+val PrimaryVioletDark       = Color(0xFFD9A3C5)
+val OnPrimaryDark           = Color(0xFF0F1724)
+val PrimaryContainerDark    = Color(0xFF3D2233)
 
-val BackgroundDark          = Color(0xFF0F0A1A)   // Very dark violet-tinted
-val SurfaceDark             = Color(0xFF1A1025)   // Slightly lighter dark
-val SurfaceVariantDark      = Color(0xFF2D1F3D)   // Card surface in dark
-val OnSurfaceLight          = Color(0xFFF5F0FA)   // Light text on dark — 14.2:1 ✓
-val InverseOnSurfaceDark    = Color(0xFF2D1F3D)
+val SecondaryRoseDark       = Color(0xFFD9A3C5)
+val OnSecondaryDark         = Color(0xFF0F1724)
 
-val ErrorRedDark            = Color(0xFFFCA5A5)   // Lighter red for dark bg
-val SuccessGreenDark        = Color(0xFF86EFAC)   // Lighter green
-val WarningAmberDark        = Color(0xFFFDE68A)   // Lighter amber
+val TertiaryTealDark        = Color(0xFF6BD4B4)
 
-val NeutralMutedDark        = Color(0xFF9CA3AF)   // Muted text — 5.1:1 on dark ✓
-val OutlineDark             = Color(0xFF3D2E52)   // Subtle border in dark
+val BackgroundDark          = Color(0xFF14101A)
+val SurfaceDark             = Color(0xFF1E1725)
+val SurfaceVariantDark      = Color(0xFF2D2233)
+val OnSurfaceLight          = Color(0xFFF5F0FA)
+val InverseOnSurfaceDark    = Color(0xFF2D2233)
 
-// Legacy aliases (backward compatibility)
+val ErrorRedDark            = Color(0xFFF4909A)
+val SuccessGreenDark        = Color(0xFF7DD4B9)
+val WarningAmberDark        = Color(0xFFF8D88E)
+
+val NeutralMutedDark        = Color(0xFF9CA3AF)
+val OutlineDark             = Color(0xFF3D2E38)
+
+// Legacy aliases
 val Purple80 = PrimaryContainer
 val PurpleGrey80 = SurfaceVariantLight
 val Pink80 = Color(0xFFEFB8C8)

@@ -37,11 +37,8 @@ data class PNavTab(
 )
 
 /**
- * Bottom navigation bar with a center FAB for the Post action.
- *
- * @param selectedTab   Currently active tab index.
- * @param onTabSelected Called when user taps a tab.
- * @param onPostClick   Called when user taps the center FAB.
+ * Premium bottom navigation bar with soft neutral surface.
+ * Center FAB for Post action. Rounded friendly icons.
  */
 @Composable
 fun PBottomNav(
@@ -53,14 +50,13 @@ fun PBottomNav(
     val tabs = listOf(
         PNavTab(0, "Nearby",   Icons.Filled.Home,       Icons.Outlined.Home),
         PNavTab(2, "Map",      Icons.Filled.LocationOn, Icons.Outlined.LocationOn),
-        // Index 1 is Post (FAB) — handled separately
         PNavTab(3, "Navigate", Icons.Filled.PlayArrow,  Icons.Outlined.PlayArrow),
         PNavTab(5, "Impact",   Icons.Filled.Info,        Icons.Outlined.Info)
     )
 
     NavigationBar(
-        containerColor = DesignSystem.Colors.surface,
-        tonalElevation = DesignSystem.Elevation.smallCard,
+        containerColor = DesignSystem.Colors.navSurface,  // Soft off-white #FFF7FA
+        tonalElevation = DesignSystem.Elevation.none,     // No harsh shadow
         modifier = modifier
     ) {
         // Left tabs (Nearby, Map)
@@ -71,7 +67,8 @@ fun PBottomNav(
                 icon = {
                     Icon(
                         if (selectedTab == tab.index) tab.selectedIcon else tab.unselectedIcon,
-                        contentDescription = tab.label
+                        contentDescription = tab.label,
+                        modifier = Modifier.size(DesignSystem.Icon.size) // 24dp
                     )
                 },
                 label = { Text(tab.label, style = DesignSystem.Typography.labelLarge) },
@@ -80,7 +77,7 @@ fun PBottomNav(
                     selectedTextColor = DesignSystem.Colors.primary,
                     unselectedIconColor = DesignSystem.Colors.neutralMuted,
                     unselectedTextColor = DesignSystem.Colors.neutralMuted,
-                    indicatorColor = DesignSystem.Colors.primaryContainer
+                    indicatorColor = DesignSystem.Colors.selectedCard  // Gentle pink
                 )
             )
         }
@@ -95,7 +92,7 @@ fun PBottomNav(
                     containerColor = DesignSystem.Colors.primary,
                     contentColor = DesignSystem.Colors.onPrimary,
                     elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = DesignSystem.Elevation.card
+                        defaultElevation = DesignSystem.Elevation.card  // 2dp soft
                     ),
                     modifier = Modifier
                         .size(48.dp)
@@ -108,7 +105,7 @@ fun PBottomNav(
             colors = NavigationBarItemDefaults.colors(
                 selectedTextColor = DesignSystem.Colors.primary,
                 unselectedTextColor = DesignSystem.Colors.neutralMuted,
-                indicatorColor = DesignSystem.Colors.surface // hide indicator behind FAB
+                indicatorColor = DesignSystem.Colors.navSurface // Hide indicator
             )
         )
 
@@ -120,7 +117,8 @@ fun PBottomNav(
                 icon = {
                     Icon(
                         if (selectedTab == tab.index) tab.selectedIcon else tab.unselectedIcon,
-                        contentDescription = tab.label
+                        contentDescription = tab.label,
+                        modifier = Modifier.size(DesignSystem.Icon.size)
                     )
                 },
                 label = { Text(tab.label, style = DesignSystem.Typography.labelLarge) },
@@ -129,7 +127,7 @@ fun PBottomNav(
                     selectedTextColor = DesignSystem.Colors.primary,
                     unselectedIconColor = DesignSystem.Colors.neutralMuted,
                     unselectedTextColor = DesignSystem.Colors.neutralMuted,
-                    indicatorColor = DesignSystem.Colors.primaryContainer
+                    indicatorColor = DesignSystem.Colors.selectedCard
                 )
             )
         }

@@ -60,12 +60,11 @@ data class PostFormState(
 )
 
 /**
- * 5-Step Wizard for Issue Reporting.
- * Step 1: Select Use Case
- * Step 2: Select Category  
- * Step 3: Enter Details + Privacy
- * Step 4: Optional AR Placement
- * Step 5: Success Confirmation
+ * 3-Step Wizard for Women's Safety Issue Reporting.
+ * Step 1: Select Tag (subcategory)
+ * Step 2: Enter Details + Privacy
+ * Step 3: Optional AR Placement
+ * Final: Success Confirmation
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -106,7 +105,7 @@ fun PostCreationARScreen(
     var isLoadingNearbyCount by remember { mutableStateOf(false) }
     
     LaunchedEffect(formState.selectedUseCase, currentLocation) {
-        if (formState.currentStep == 3 && currentLocation != null && formState.selectedUseCase != null) {
+        if (formState.currentStep == 2 && currentLocation != null && formState.selectedUseCase != null) {
             isLoadingNearbyCount = true
             try {
                 // Query nearby issues with same use case
@@ -157,18 +156,17 @@ fun PostCreationARScreen(
                 title = { 
                     Text(
                         when (formState.currentStep) {
-                            1 -> "Step 1/5 — Category"
-                            2 -> "Step 2/5 — Details"
-                            3 -> "Step 3/5 — Description"
-                            4 -> "Step 4/5 — AR Placement"
-                            5 -> "Report Submitted"
+                            1 -> "Step 1/3 — What Happened"
+                            2 -> "Step 2/3 — Details"
+                            3 -> "Step 3/3 — AR Placement"
+                            4 -> "Report Submitted"
                             else -> "Report Issue"
                         },
                         style = DesignSystem.Typography.titleLarge
                     )
                 },
                 navigationIcon = {
-                    if (formState.currentStep > 1 && formState.currentStep < 5) {
+                    if (formState.currentStep > 1 && formState.currentStep < 4) {
                         IconButton(onClick = {
                             haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
                             formState = formState.copy(currentStep = formState.currentStep - 1)
@@ -198,22 +196,8 @@ fun PostCreationARScreen(
                 label = "StepTransition"
             ) { step ->
                 when (step) {
-                    1 -> Step1UseCaseSelection(
-                        formState = formState,
-                        onUseCaseSelected = { useCase ->
-                            formState = formState.copy(selectedUseCase = useCase)
-                        },
-                        onNext = {
-                            if (formState.selectedUseCase != null) {
-                                formState = formState.copy(currentStep = 2)
-                            } else {
-                                Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
-                            }
-                        },
-                        onCancel = onCancel
-                    )
-                    
-                    2 -> Step2CategorySelection(
+                    // Step 1: Tag selection (Women's Safety subcategories)
+                    1 -> Step2CategorySelection(
                         formState = formState,
                         onCategorySelected = { category ->
                             formState = formState.copy(
@@ -223,15 +207,16 @@ fun PostCreationARScreen(
                         },
                         onNext = {
                             if (formState.selectedCategory != null) {
-                                formState = formState.copy(currentStep = 3)
+                                formState = formState.copy(currentStep = 2)
                             } else {
                                 Toast.makeText(context, "Please select what happened", Toast.LENGTH_SHORT).show()
                             }
                         },
-                        onBack = { formState = formState.copy(currentStep = 1) }
+                        onBack = { onCancel() }
                     )
                     
-                    3 -> Step3DetailsAndPrivacy(
+                    // Step 2: Details and Privacy
+                    2 -> Step3DetailsAndPrivacy(
                         formState = formState,
                         nearbyCount = nearbyCount,
                         isLoadingNearbyCount = isLoadingNearbyCount,
@@ -261,47 +246,45 @@ fun PostCreationARScreen(
                                     Toast.makeText(context, "Please confirm you understand the anonymous submission", Toast.LENGTH_SHORT).show()
                                 }
                                 else -> {
-                                    formState = formState.copy(currentStep = 4)
+                                    formState = formState.copy(currentStep = 3)
                                 }
                             }
                         },
-                        onBack = { formState = formState.copy(currentStep = 2) }
+                        onBack = { formState = formState.copy(currentStep = 1) }
                     )
                     
-                    4 -> Step4ARPlacement(
+                    // Step 3: AR Placement
+                    3 -> Step4ARPlacement(
                         formState = formState,
                         onPlaceOnSurface = {
-                            // Don't save here - SurfaceAnchorScreen will save to surface_anchors collection
-                            // This prevents duplicate entries (one in issues, one in surface_anchors)
                             onOpenARPlacement?.invoke(
                                 formState.description,
                                 formState.selectedCategory?.id ?: "general",
                                 formState.severity.name,
                                 formState.selectedUseCase?.name ?: ""
                             )
-                            formState = formState.copy(currentStep = 5, saveSuccess = true)
+                            formState = formState.copy(currentStep = 4, saveSuccess = true)
                         },
                         onSkipAR = {
-                            // Save without AR
                             scope.launch {
                                 formState = formState.copy(isSaving = true)
                                 saveIssue(viewModel, formState, context) { success ->
                                     formState = formState.copy(isSaving = false)
                                     if (success) {
-                                        formState = formState.copy(currentStep = 5, saveSuccess = true)
+                                        formState = formState.copy(currentStep = 4, saveSuccess = true)
                                     }
                                 }
                             }
                         },
                         isSaving = formState.isSaving,
-                        onBack = { formState = formState.copy(currentStep = 3) }
+                        onBack = { formState = formState.copy(currentStep = 2) }
                     )
                     
-                    5 -> Step5SuccessConfirmation(
+                    // Success confirmation
+                    4 -> Step5SuccessConfirmation(
                         formState = formState,
-                        nearbyCount = nearbyCount + 1, // +1 for their new report
+                        nearbyCount = nearbyCount + 1,
                         onShare = {
-                            // Open share dialog
                             val shareText = buildString {
                                 append("🚨 ${formState.selectedUseCase?.icon ?: ""} ${formState.selectedUseCase?.label ?: "Issue"} Alert\n\n")
                                 append("${formState.description}\n\n")
@@ -315,12 +298,8 @@ fun PostCreationARScreen(
                             }
                             context.startActivity(android.content.Intent.createChooser(sendIntent, "Share Alert"))
                         },
-                        onViewOnMap = {
-                            onPostCreated() // This switches to map tab
-                        },
-                        onDone = {
-                            onPostCreated()
-                        }
+                        onViewOnMap = { onPostCreated() },
+                        onDone = { onPostCreated() }
                     )
                 }
             }
@@ -601,7 +580,7 @@ private fun Step2CategorySelection(
 }
 
 /**
- * Category selection button
+ * Category selection button — soft filled card, no thick borders
  */
 @Composable
 private fun CategoryButton(
@@ -611,9 +590,9 @@ private fun CategoryButton(
     onClick: () -> Unit
 ) {
     val backgroundColor = if (isSelected) {
-        useCase.color.copy(alpha = 0.15f)
+        DesignSystem.Colors.selectedCard  // Gentle pink #F9E4EF
     } else {
-        MaterialTheme.colorScheme.surface
+        DesignSystem.Colors.surface       // White #FFFFFF
     }
     
     Card(
@@ -621,47 +600,52 @@ private fun CategoryButton(
             .fillMaxWidth()
             .clickable { onClick() },
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 4.dp else 1.dp)
+        shape = DesignSystem.Shapes.card,  // 14dp radius
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = DesignSystem.Elevation.smallCard  // 1dp soft
+        )
+        // No border — premium clean look
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(DesignSystem.Spacing.md),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(category.icon, fontSize = 24.sp)
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(DesignSystem.Spacing.md))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     category.label,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
+                    style = DesignSystem.Typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = DesignSystem.Colors.onSurface
                 )
                 Text(
                     category.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = DesignSystem.Typography.bodyMedium,
+                    color = DesignSystem.Colors.neutralMuted
                 )
             }
-            // Severity badge
+            // Severity badge — soft pill
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(category.defaultSeverity.color.copy(alpha = 0.2f))
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .clip(DesignSystem.Shapes.chip)
+                    .background(category.defaultSeverity.color.copy(alpha = 0.15f))
+                    .padding(horizontal = DesignSystem.Spacing.xs, vertical = DesignSystem.Spacing.xxs)
             ) {
                 Text(
                     category.defaultSeverity.label,
-                    style = MaterialTheme.typography.labelSmall,
+                    style = DesignSystem.Typography.labelLarge,
                     color = category.defaultSeverity.color
                 )
             }
             if (isSelected) {
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(DesignSystem.Spacing.xs))
                 Icon(
                     Icons.Filled.Check,
                     contentDescription = "Selected",
-                    tint = useCase.color
+                    tint = DesignSystem.Colors.primary
                 )
             }
         }

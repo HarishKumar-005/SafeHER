@@ -31,35 +31,24 @@ import kotlinx.coroutines.launch
 fun OnboardingOverlay(
     onDismiss: () -> Unit
 ) {
+    // PRD: 3 pages — Privacy → AR Tutorial → Quick Start
     val pages = listOf(
         OnboardingPage(
             emoji = "🛡️",
-            title = "Welcome to SafeHer AR",
-            body = "An AR-powered safety companion that helps you identify and report unsafe areas in real-time.",
+            title = "Your Safety, Your Privacy",
+            body = "Anonymous by default — we do not collect names. Evidence remains encrypted on your device unless you choose to share.",
             accent = DesignSystem.Colors.primary
         ),
         OnboardingPage(
             emoji = "👁️‍🗨️",
-            title = "See Safety Through AR",
-            body = "Point your camera to reveal safety reports, risk levels, and community alerts pinned to real-world locations.",
-            accent = DesignSystem.Colors.secondary
-        ),
-        OnboardingPage(
-            emoji = "🔒",
-            title = "100% Anonymous",
-            body = "Your reports are anonymous. No personal data is collected or shared. All content moderation happens on-device using MediaPipe.",
+            title = "See Safety in AR",
+            body = "Point your camera to reveal safety reports, risk levels, and community alerts pinned to real-world locations. HIGH risk areas pulse and trigger vibration.",
             accent = DesignSystem.Colors.success
         ),
         OnboardingPage(
-            emoji = "🆘",
-            title = "Emergency SOS",
-            body = "Tap the SOS button anytime for instant emergency vibration alerts. Your safety comes first — always.",
-            accent = DesignSystem.Colors.sos
-        ),
-        OnboardingPage(
-            emoji = "📋",
-            title = "Data & Privacy",
-            body = "• Reports are stored in Firebase (encrypted in transit)\n• Location is used only for nearby reports\n• No login or account required\n• Data auto-expires after 90 days\n• Open-source codebase",
+            emoji = "🚀",
+            title = "Ready to Go",
+            body = "Report unsafe areas • View risk heatmap • Navigate safe routes • Emergency SOS — all in one app, built for women's safety.",
             accent = DesignSystem.Colors.primary
         )
     )
@@ -177,7 +166,7 @@ fun OnboardingOverlay(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        if (isLast) "Get Started" else "Next",
+                        if (isLast) "Start SafeHer" else "Next",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp,

@@ -90,14 +90,15 @@ fun ImpactDashboardScreen(viewModel: MainViewModel) {
                 item {
                     Text(
                         "🛡️ SafeHer Impact",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
+                        style = DesignSystem.Typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = DesignSystem.Colors.onSurface
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         "How SafeHer AR is making your area safer for women",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = DesignSystem.Typography.bodyMedium,
+                        color = DesignSystem.Colors.neutralMuted
                     )
                     // Last synced
                     val sdf = remember { SimpleDateFormat("h:mm a", Locale.getDefault()) }
@@ -181,17 +182,20 @@ fun ImpactDashboardScreen(viewModel: MainViewModel) {
 // ═══════════════════════════════════════════════════════════════════
 
 /**
- * Overall statistics card with 2×2 grid.
+ * Overall statistics card with soft pink tinted background.
  */
 @Composable
 private fun OverallStatsCard(stats: ImpactStats) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = DesignSystem.Colors.primaryContainer
+            containerColor = DesignSystem.Colors.softPinkCard  // Soft pink fill, not pure white
         ),
-        shape = DesignSystem.Shapes.card
+        shape = DesignSystem.Shapes.card,  // 14dp radius
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = DesignSystem.Elevation.smallCard  // 1dp soft
+        )
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(DesignSystem.Spacing.lg)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -207,7 +211,7 @@ private fun OverallStatsCard(stats: ImpactStats) {
                     icon = "✅"
                 )
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(DesignSystem.Spacing.lg))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -228,7 +232,7 @@ private fun OverallStatsCard(stats: ImpactStats) {
 }
 
 /**
- * Single stat item.
+ * Single stat item — Inter typography.
  */
 @Composable
 private fun StatItem(value: String, label: String, icon: String) {
@@ -237,16 +241,17 @@ private fun StatItem(value: String, label: String, icon: String) {
         modifier = Modifier.width(140.dp)
     ) {
         Text(icon, fontSize = 24.sp)
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(DesignSystem.Spacing.xxs))
         Text(
             value,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
+            style = DesignSystem.Typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = DesignSystem.Colors.onSurface
         )
         Text(
             label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
+            style = DesignSystem.Typography.bodyMedium,
+            color = DesignSystem.Colors.neutralMuted,
             textAlign = TextAlign.Center
         )
     }
@@ -412,37 +417,43 @@ private fun QuickStat(label: String, value: String, color: Color) {
 }
 
 /**
- * Your contribution card.
+ * Your contribution card — soft teal tinted background.
  */
 @Composable
 private fun YourContributionCard(stats: ImpactStats) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
+            containerColor = DesignSystem.Colors.softTealCard  // Soft teal fill
+        ),
+        shape = DesignSystem.Shapes.card,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = DesignSystem.Elevation.smallCard
         )
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(DesignSystem.Spacing.lg)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("🌟", fontSize = 28.sp)
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(DesignSystem.Spacing.sm))
                 Text(
                     "Your Contribution",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    style = DesignSystem.Typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = DesignSystem.Colors.onSurface
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(DesignSystem.Spacing.md))
 
             Text(
                 if (stats.totalReports > 0)
                     "Your reports are helping women stay safe. Keep going!"
                 else
                     "Report unsafe areas to help protect women in your community.",
-                style = MaterialTheme.typography.bodyMedium
+                style = DesignSystem.Typography.bodyMedium,
+                color = DesignSystem.Colors.neutralMuted
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(DesignSystem.Spacing.sm))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -452,7 +463,8 @@ private fun YourContributionCard(stats: ImpactStats) {
                     Text("⭐⭐⭐⭐⭐", fontSize = 16.sp)
                     Text(
                         "Community Trust",
-                        style = MaterialTheme.typography.bodySmall
+                        style = DesignSystem.Typography.bodyMedium,
+                        color = DesignSystem.Colors.neutralMuted
                     )
                 }
             }

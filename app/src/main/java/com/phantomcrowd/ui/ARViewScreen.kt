@@ -11,7 +11,9 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -24,9 +26,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -66,6 +71,8 @@ fun ARViewScreen(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val haptic = LocalHapticFeedback.current
+    val config = LocalConfiguration.current
+    val screenWidthDp = config.screenWidthDp.dp
     
     // Collect state
     val anchors by viewModel.anchors.collectAsState()
@@ -76,18 +83,31 @@ fun ARViewScreen(
     val prefs = remember { context.getSharedPreferences("safeher_ar_prefs", Context.MODE_PRIVATE) }
     var showTutorial by remember { mutableStateOf(!prefs.getBoolean("ar_tutorial_seen", false)) }
     
+    // Detail sheet state
+    var selectedAnchor by remember { mutableStateOf<AnchorData?>(null) }
+    var selectedDistance by remember { mutableFloatStateOf(0f) }
+    var isReadingAloud by remember { mutableStateOf(false) }
+    
+    // TTS toggle (default ON for demo)
+    var ttsEnabled by remember { mutableStateOf(prefs.getBoolean("ar_tts_enabled", true)) }
+    
     // TTS for HIGH risk spoken alerts
     var tts by remember { mutableStateOf<TextToSpeech?>(null) }
+    var ttsReady by remember { mutableStateOf(false) }
     val spokenAlertIds = remember { mutableSetOf<String>() }
     
     DisposableEffect(Unit) {
         val engine = TextToSpeech(context) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts?.language = Locale.US
+                ttsReady = true
             }
         }
         tts = engine
-        onDispose { engine.shutdown() }
+        onDispose {
+            engine.stop()
+            engine.shutdown()
+        }
     }
     
     // Compass heading - THROTTLED to prevent excessive recompositions
@@ -204,46 +224,105 @@ fun ARViewScreen(
             modifier = Modifier.fillMaxSize()
         )
         
-        // Issue Labels Overlay - Uses pre-calculated data
+        // ─── Issue Labels Overlay — collision-aware ────────────────
         if (anchorData.isNotEmpty()) {
             val visibleAnchors = remember(deviceHeading, anchorData) {
                 anchorData.mapNotNull { data ->
-                    // Calculate angle difference from current heading
                     var angleDiff = data.bearing - deviceHeading
                     if (angleDiff > 180) angleDiff -= 360
                     if (angleDiff < -180) angleDiff += 360
-                    
-                    // Only show issues within ±60° field of view
                     if (abs(angleDiff) <= 60) {
                         VisibleAnchor(data.anchor, angleDiff, data.distance)
                     } else null
+                }.sortedWith(
+                    compareByDescending<VisibleAnchor> {
+                        // Priority: risk > proximity > confirmations
+                        val ageDays = (System.currentTimeMillis() - it.anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
+                        val risk = RiskScoring.computeRiskLevel(it.anchor.severity, it.anchor.upvotes, ageDays, it.distance.toDouble())
+                        when (risk) { RiskLevel.HIGH -> 3; RiskLevel.MEDIUM -> 2; RiskLevel.LOW -> 1 }
+                    }.thenBy { it.distance }
+                     .thenByDescending { it.anchor.upvotes }
+                )
+            }
+
+            // Off-screen indicators for labels beyond FOV
+            anchorData.forEach { data ->
+                var angleDiff = data.bearing - deviceHeading
+                if (angleDiff > 180) angleDiff -= 360
+                if (angleDiff < -180) angleDiff += 360
+                if (abs(angleDiff) > 60 && data.distance < 200) {
+                    val isLeft = angleDiff < 0
+                    val ageDays = (System.currentTimeMillis() - data.anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
+                    val risk = RiskScoring.computeRiskLevel(data.anchor.severity, data.anchor.upvotes, ageDays, data.distance.toDouble())
+                    EdgeIndicator(
+                        isLeft = isLeft,
+                        riskLevel = risk,
+                        distance = data.distance,
+                        modifier = Modifier
+                            .align(if (isLeft) Alignment.CenterStart else Alignment.CenterEnd)
+                            .padding(vertical = 4.dp)
+                    )
                 }
             }
-            
-            // Draw labels - max 5
-            visibleAnchors.take(5).forEachIndexed { index, visible ->
-                // Position label based on angle (center = 0, left = -60, right = +60)
-                val xOffset = visible.angleDiff / 60f // -1 to +1
-                
-                // Size based on distance (closer = bigger)
-                val scale = when {
-                    visible.distance < 20 -> 1.3f
-                    visible.distance < 50 -> 1.1f
-                    visible.distance < 100 -> 1.0f
-                    visible.distance < 200 -> 0.9f
-                    else -> 0.8f
+
+            // Collision-aware label positioning
+            val placedPositions = mutableListOf<Pair<Float, Float>>() // (x, y)
+            val clustered = mutableListOf<VisibleAnchor>() // overflow
+
+            visibleAnchors.take(8).forEach { visible ->
+                val xOffset = visible.angleDiff / 60f
+                var yPosition = 0.25f + (placedPositions.size * 0.14f)
+
+                // Collision detection: radial push
+                var collisionAttempts = 0
+                while (collisionAttempts < 3 && placedPositions.any { existing ->
+                    abs(existing.first - xOffset) < 0.25f && abs(existing.second - yPosition) < 0.12f
+                }) {
+                    yPosition += 0.12f
+                    collisionAttempts++
                 }
-                
-                // Vertical position based on index (stack labels)
-                val yPosition = 0.3f + (index * 0.12f)
-                
-                IssueLabel(
-                    anchor = visible.anchor,
-                    distance = visible.distance,
-                    xOffset = xOffset,
-                    yPosition = yPosition,
-                    scale = scale,
-                    modifier = Modifier.align(Alignment.TopCenter)
+
+                if (placedPositions.size < 5 && yPosition < 0.85f) {
+                    placedPositions.add(xOffset to yPosition)
+                    val scale = when {
+                        visible.distance < 20 -> 1.2f
+                        visible.distance < 50 -> 1.05f
+                        visible.distance < 100 -> 1.0f
+                        visible.distance < 200 -> 0.9f
+                        else -> 0.85f
+                    }
+                    ARInlineLabel(
+                        anchor = visible.anchor,
+                        distance = visible.distance,
+                        xOffset = xOffset,
+                        yPosition = yPosition,
+                        scale = scale,
+                        screenWidth = screenWidthDp,
+                        onTap = {
+                            selectedAnchor = visible.anchor
+                            selectedDistance = visible.distance
+                        },
+                        modifier = Modifier.align(Alignment.TopCenter)
+                    )
+                } else {
+                    clustered.add(visible)
+                }
+            }
+
+            // Cluster marker for overflow labels (>3 clustered)
+            if (clustered.size >= 2) {
+                ClusterMarker(
+                    count = clustered.size,
+                    onTap = {
+                        // Show highest-priority clustered anchor
+                        clustered.firstOrNull()?.let {
+                            selectedAnchor = it.anchor
+                            selectedDistance = it.distance
+                        }
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(start = 16.dp, bottom = 120.dp)
                 )
             }
         }
@@ -401,23 +480,56 @@ fun ARViewScreen(
             }
         }
         
-        // Haptic + TTS alert for HIGH risk anchors entering view
-        LaunchedEffect(anchorData) {
+        // ─── Auto-TTS + Haptic for HIGH risk (once per label per session) ──
+        LaunchedEffect(anchorData, ttsEnabled) {
+            if (!ttsEnabled || !ttsReady) return@LaunchedEffect
             anchorData.filter { data ->
                 val ageDays = (System.currentTimeMillis() - data.anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
                 val level = RiskScoring.computeRiskLevel(data.anchor.severity, data.anchor.upvotes, ageDays, data.distance.toDouble())
                 level == RiskLevel.HIGH && data.anchor.id !in spokenAlertIds && data.distance < 200
             }.take(1).forEach { data ->
+                // Haptic pulse first
                 haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
                 spokenAlertIds.add(data.anchor.id)
+                // Speak headline + distance
+                val headline = data.anchor.messageText.ifEmpty { data.anchor.category }
+                    .take(80) // Keep TTS short
                 tts?.speak(
-                    "Caution. High risk safety alert ${data.distance.toInt()} meters ahead.",
+                    "Caution. $headline. ${data.distance.toInt()} meters ahead.",
                     TextToSpeech.QUEUE_ADD,
                     null,
                     data.anchor.id
                 )
             }
         }
+        
+        // ─── Detail Sheet Overlay ─────────────────────────────────
+        com.phantomcrowd.ui.components.ARDetailSheet(
+            anchor = selectedAnchor ?: AnchorData(),
+            distance = selectedDistance,
+            isVisible = selectedAnchor != null,
+            onDismiss = {
+                selectedAnchor = null
+                isReadingAloud = false
+                tts?.stop()
+            },
+            onConfirm = { /* TODO: Increment upvote */ },
+            onSOS = { /* TODO: Trigger SOS */ },
+            onNavigate = { /* TODO: Navigate to anchor */ },
+            onReadAloud = {
+                if (isReadingAloud) {
+                    tts?.stop()
+                    isReadingAloud = false
+                } else {
+                    val text = selectedAnchor?.messageText ?: ""
+                    if (text.isNotEmpty() && ttsReady) {
+                        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "detail_read")
+                        isReadingAloud = true
+                    }
+                }
+            },
+            isReadingAloud = isReadingAloud
+        )
     }
 }
 
@@ -466,172 +578,236 @@ private fun getCategoryIcon(category: String, severity: String): String {
 }
 
 /**
- * Floating issue label composable — Dark glassmorphic card with severity accent.
+ * AR Inline Label — Light translucent card, production-ready.
  *
  * Design:
- *  ┌──────────────────────────┐
- *  │ ● 🚨 Issue message text  │  ← severity-colored dot + icon
- *  │      12m • URGENT        │  ← distance + severity label
- *  └──────────────────────────┘
- *  Left 3dp border = severity color
- *  Background = dark translucent (#0D1117 @ 88%)
- *  Subtle bottom glow for URGENT/HIGH
+ *  ┌────────────────────────────────────────┐
+ *  │ ● 🚨 Issue headline (1 line)       ⋯ │
+ *  │   12m • HIGH • URGENT • 2✓            │
+ *  └────────────────────────────────────────┘
+ *  Background: rgba(255,255,255,0.92)
+ *  Width: 220–360dp  Height: max 120dp
+ *  800ms pulse glow for HIGH (≤6% scale)
  */
 @Composable
-private fun IssueLabel(
+private fun ARInlineLabel(
     anchor: AnchorData,
     distance: Float,
     xOffset: Float,
     yPosition: Float,
     scale: Float,
+    screenWidth: androidx.compose.ui.unit.Dp,
+    onTap: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val severityColor = getSeverityColor(anchor.severity)
-    val isUrgent = anchor.severity.uppercase() in listOf("URGENT", "HIGH")
+    val isHighRisk = anchor.severity.uppercase() in listOf("URGENT", "HIGH")
 
-    // Pulsing animation for URGENT/HIGH severity
-    val infiniteTransition = rememberInfiniteTransition(label = "severity_pulse")
-    val pulseAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.7f,
-        targetValue = 1f,
+    // 800ms pulse glow for HIGH (≤6% scale change)
+    val infiniteTransition = rememberInfiniteTransition(label = "ar_pulse")
+    val pulseScale by infiniteTransition.animateFloat(
+        initialValue = 1.0f,
+        targetValue = if (isHighRisk) 1.06f else 1.0f,
         animationSpec = infiniteRepeatable(
             animation = tween(800, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "pulse"
+        label = "pulse_scale"
+    )
+    val pulseAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.92f,
+        targetValue = if (isHighRisk) 1f else 0.92f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(800, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulse_alpha"
     )
 
-    val dotAlpha = if (isUrgent) pulseAlpha else 1f
     val categoryIcon = getCategoryIcon(anchor.category, anchor.severity)
     val distanceText = if (distance < 1000) "${distance.toInt()}m" else "${String.format("%.1f", distance / 1000)}km"
     val severityLabel = anchor.severity.ifEmpty { "MEDIUM" }.uppercase()
+    val ageDays = (System.currentTimeMillis() - anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
+    val riskLevel = RiskScoring.computeRiskLevel(anchor.severity, anchor.upvotes, ageDays, distance.toDouble())
 
-    // Frosted indigo card with subtle severity tint
-    // — not pure black (too harsh), not white (invisible)
-    // — deep indigo base picks up a whisper of the severity hue
-    val cardBase = Color(0xFF1A1A2E)        // Deep indigo
-    val cardBg = androidx.compose.ui.graphics.lerp(cardBase, severityColor, 0.08f)
-        .copy(alpha = 0.82f)
-    val borderShape = RoundedCornerShape(
-        topStart = 0.dp, bottomStart = 0.dp,
-        topEnd = 12.dp, bottomEnd = 12.dp
-    )
+    // Light translucent background
+    val cardBg = Color.White.copy(alpha = pulseAlpha)
+    val cardShape = DesignSystem.Shapes.card // 14dp radius
+
+    // Preferred width: 45% of screen, clamped 220–360dp
+    val preferredWidth = screenWidth * 0.45f
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 16.dp)
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .offset(x = (xOffset * 150).dp, y = (yPosition * 1000).dp)
-                .graphicsLayer(scaleX = scale, scaleY = scale)
-                .widthIn(min = 140.dp, max = 200.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // ── Left severity accent bar ──────────────────────
-            Box(
-                modifier = Modifier
-                    .width(4.dp)
-                    .height(56.dp)
-                    .clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp))
-                    .background(severityColor.copy(alpha = dotAlpha))
-            )
-
-            // ── Card body ────────────────────────────────────
-            Column(
-                modifier = Modifier
-                    .clip(borderShape)
-                    .background(cardBg)
-                    .padding(start = 10.dp, end = 12.dp, top = 8.dp, bottom = 8.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                // Top row: severity dot + icon + text
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    // Severity dot (pulsing for URGENT/HIGH)
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .background(
-                                severityColor.copy(alpha = dotAlpha),
-                                RoundedCornerShape(50)
-                            )
-                    )
-                    // Category icon
-                    Text(categoryIcon, fontSize = 14.sp)
-                    // Message
-                    Text(
-                        text = anchor.messageText.ifEmpty { anchor.category },
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false)
-                    )
+                .graphicsLayer(
+                    scaleX = scale * pulseScale,
+                    scaleY = scale * pulseScale
+                )
+                .widthIn(min = 220.dp, max = 360.dp)
+                .heightIn(max = 120.dp) // Compact height limit
+                .clip(cardShape)
+                .background(cardBg)
+                .clickable(onClick = onTap)
+                .padding(horizontal = 14.dp, vertical = 10.dp)
+                .semantics {
+                    contentDescription = "${anchor.messageText.ifEmpty { anchor.category }}, $distanceText away, $severityLabel risk. Tap to open details."
                 }
+        ) {
+            // ── Top row: dot + icon + headline + chevron ──
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                // Risk dot
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(severityColor)
+                )
+                // Category icon (28dp)
+                Text(categoryIcon, fontSize = 20.sp)
+                // Headline — Poppins SemiBold 16sp, 1-line ellipsis
+                Text(
+                    text = anchor.messageText.ifEmpty { anchor.category },
+                    style = DesignSystem.Typography.titleLarge.copy(fontSize = 16.sp),
+                    fontWeight = FontWeight.SemiBold,
+                    color = DesignSystem.Colors.onSurface, // #0F1724
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false)
+                )
+                // Chevron affordance
+                Text(
+                    "⋯",
+                    color = DesignSystem.Colors.neutralMuted,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
 
-                Spacer(modifier = Modifier.height(3.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-                // Bottom row: distance + risk level + severity badge
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
+            // ── Bottom row: distance + risk pill + severity pill + confirm count ──
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                // Distance
+                Text(
+                    text = distanceText,
+                    style = DesignSystem.Typography.bodyMedium,
+                    color = DesignSystem.Colors.neutralMuted,
+                    fontSize = 12.sp
+                )
+
+                // Risk pill (24dp height, 12dp radius)
+                val riskColor = when (riskLevel) {
+                    RiskLevel.HIGH -> DesignSystem.Colors.error
+                    RiskLevel.MEDIUM -> DesignSystem.Colors.warning
+                    RiskLevel.LOW -> DesignSystem.Colors.success
+                }
+                Text(
+                    text = riskLevel.shortLabel,
+                    color = Color.White,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .height(24.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(riskColor)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+
+                // Severity badge
+                Text(
+                    text = severityLabel,
+                    color = Color.White,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .height(24.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(severityColor)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+
+                // Confirmations count
+                if (anchor.upvotes > 0) {
                     Text(
-                        text = distanceText,
-                        color = Color.White.copy(alpha = 0.65f),
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Medium
+                        text = "${anchor.upvotes}✓",
+                        color = DesignSystem.Colors.success,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
-
-                    // Risk level pill
-                    val ageDays = (System.currentTimeMillis() - anchor.timestamp).toDouble() / (1000 * 60 * 60 * 24)
-                    val riskLevel = RiskScoring.computeRiskLevel(anchor.severity, anchor.upvotes, ageDays, distance.toDouble())
-                    val riskColor = when (riskLevel) {
-                        RiskLevel.HIGH -> Color(0xFFEF4444)
-                        RiskLevel.MEDIUM -> Color(0xFFFBBF24)
-                        RiskLevel.LOW -> Color(0xFF22C55E)
-                    }
-                    Text(
-                        text = riskLevel.shortLabel,
-                        color = riskColor,
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .background(riskColor.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
-                            .padding(horizontal = 4.dp, vertical = 1.dp)
-                    )
-
-                    // Severity badge
-                    Text(
-                        text = severityLabel,
-                        color = severityColor,
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.5.sp,
-                        modifier = Modifier
-                            .background(
-                                severityColor.copy(alpha = 0.15f),
-                                RoundedCornerShape(4.dp)
-                            )
-                            .padding(horizontal = 5.dp, vertical = 1.dp)
-                    )
-
-                    // Report count
-                    if (anchor.upvotes > 0) {
-                        Text(
-                            text = "${anchor.upvotes}✓",
-                            color = Color.White.copy(alpha = 0.5f),
-                            fontSize = 9.sp
-                        )
-                    }
                 }
             }
+        }
+    }
+}
+
+/**
+ * Edge indicator arrow for off-screen labels within 200m.
+ */
+@Composable
+private fun EdgeIndicator(
+    isLeft: Boolean,
+    riskLevel: RiskLevel,
+    distance: Float,
+    modifier: Modifier = Modifier
+) {
+    val color = when (riskLevel) {
+        RiskLevel.HIGH -> DesignSystem.Colors.error
+        RiskLevel.MEDIUM -> DesignSystem.Colors.warning
+        RiskLevel.LOW -> DesignSystem.Colors.success
+    }
+    val arrow = if (isLeft) "◀" else "▶"
+    val distText = if (distance < 1000) "${distance.toInt()}m" else "${String.format("%.1f", distance / 1000)}km"
+
+    Row(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(color.copy(alpha = 0.85f))
+            .padding(horizontal = 8.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(arrow, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Text(distText, color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Medium)
+    }
+}
+
+/**
+ * Cluster marker badge for >3 overlapping labels that didn't fit on screen.
+ */
+@Composable
+private fun ClusterMarker(
+    count: Int,
+    onTap: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier
+            .size(48.dp)
+            .clickable(onClick = onTap),
+        shape = CircleShape,
+        color = DesignSystem.Colors.primary.copy(alpha = 0.9f),
+        contentColor = Color.White
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Text(
+                text = "+$count",
+                color = Color.White,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

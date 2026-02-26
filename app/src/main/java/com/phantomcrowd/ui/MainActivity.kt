@@ -1,6 +1,7 @@
 package com.phantomcrowd.ui
 
 import android.os.Bundle
+import android.app.UiModeManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -45,6 +46,9 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Force unified light feminine theme — disable system dark mode for this app
+        val uiModeManager = getSystemService(UiModeManager::class.java)
+        uiModeManager?.setApplicationNightMode(UiModeManager.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         
         // Create Notification Channel for Geofencing

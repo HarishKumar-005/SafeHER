@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.SafeHerAR" parent="android:Theme.Material.Light.NoActionBar" />
+    <!--
+        SafeHer AR uses a SINGLE unified feminine theme.
+        Same in day and night mode — soft off-white #FFF7FA background.
+    -->
+    <style name="Theme.SafeHerAR" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#FFF7FA</item>
+        <item name="android:statusBarColor">#FFF7FA</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFF7FA</item>
+    </style>
 </resources>

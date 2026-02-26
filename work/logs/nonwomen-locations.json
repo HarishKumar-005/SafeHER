@@ -1,0 +1,108 @@
+{
+    "scan_timestamp": "2026-02-26T18:20:00+05:30",
+    "description": "Locations of non-women category references in the codebase",
+    "locations": [
+        {
+            "file": "app/src/main/java/com/phantomcrowd/data/UseCase.kt",
+            "references": [
+                {
+                    "line": "21-26",
+                    "type": "enum_entry",
+                    "value": "ACCESSIBILITY"
+                },
+                {
+                    "line": "27-32",
+                    "type": "enum_entry",
+                    "value": "LABOR_RIGHTS"
+                },
+                {
+                    "line": "33-38",
+                    "type": "enum_entry",
+                    "value": "FACILITIES"
+                },
+                {
+                    "line": "39-44",
+                    "type": "enum_entry",
+                    "value": "ENVIRONMENTAL"
+                },
+                {
+                    "line": "45-50",
+                    "type": "enum_entry",
+                    "value": "CIVIL_RESISTANCE"
+                },
+                {
+                    "line": "128-136",
+                    "type": "subcategory_list",
+                    "value": "accessibilityCategories"
+                },
+                {
+                    "line": "138-146",
+                    "type": "subcategory_list",
+                    "value": "laborRightsCategories"
+                },
+                {
+                    "line": "148-156",
+                    "type": "subcategory_list",
+                    "value": "facilitiesCategories"
+                },
+                {
+                    "line": "158-166",
+                    "type": "subcategory_list",
+                    "value": "environmentalCategories"
+                },
+                {
+                    "line": "168-176",
+                    "type": "subcategory_list",
+                    "value": "civilResistanceCategories"
+                },
+                {
+                    "line": "184-188",
+                    "type": "when_branch",
+                    "value": "getCategories non-women branches"
+                },
+                {
+                    "line": "217-226",
+                    "type": "when_branch",
+                    "value": "getWhyThisMatters non-women branches"
+                },
+                {
+                    "line": "234-243",
+                    "type": "when_branch",
+                    "value": "getSuccessMessage non-women branches"
+                },
+                {
+                    "line": "250-254",
+                    "type": "when_branch",
+                    "value": "getImpactMetricLabel non-women branches"
+                }
+            ]
+        },
+        {
+            "file": "app/src/main/java/com/phantomcrowd/ui/PostCreationARScreen.kt",
+            "references": [
+                {
+                    "line": "399",
+                    "type": "ui_grid",
+                    "value": "items(UseCase.entries) renders ALL use cases including non-women"
+                }
+            ]
+        },
+        {
+            "file": "app/src/main/java/com/phantomcrowd/ui/NearbyIssuesScreen.kt",
+            "references": [
+                {
+                    "line": "88",
+                    "type": "state",
+                    "value": "selectedUseCase state allows filtering by any UseCase"
+                },
+                {
+                    "line": "274-367",
+                    "type": "ui_component",
+                    "value": "FilterRow shows UseCase dropdown with all entries"
+                }
+            ]
+        }
+    ],
+    "total_references": 17,
+    "action": "Remove all non-women enum entries, subcategories, when-branches, and UI rendering of UseCase selection"
+}

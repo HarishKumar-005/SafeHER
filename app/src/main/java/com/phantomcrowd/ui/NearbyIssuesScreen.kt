@@ -84,23 +84,16 @@ fun NearbyIssuesScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     
-    // Filter state
-    var selectedUseCase by remember { mutableStateOf<UseCase?>(null) }
+    // Filter state — no UseCase filter (women-only app)
     var selectedSort by remember { mutableStateOf(SortOption.RECENT) }
     var expandedCardId by remember { mutableStateOf<String?>(null) }
     
     // Dropdown menu states
-    var showUseCaseDropdown by remember { mutableStateOf(false) }
     var showSortDropdown by remember { mutableStateOf(false) }
     
     // Filter and sort the anchors
-    val filteredAnchors = remember(anchors, selectedUseCase, selectedSort, currentLocation) {
+    val filteredAnchors = remember(anchors, selectedSort, currentLocation) {
         var result = anchors.toList()
-        
-        // Filter by use case
-        if (selectedUseCase != null) {
-            result = result.filter { it.useCase == selectedUseCase!!.name }
-        }
         
         // Sort
         result = when (selectedSort) {
@@ -150,18 +143,38 @@ fun NearbyIssuesScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            // Filter Row
-            FilterRow(
-                selectedUseCase = selectedUseCase,
+            // SafeHer AR Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    "🛡️ SafeHer AR",
+                    style = DesignSystem.Typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = DesignSystem.Colors.primary
+                )
+                Surface(
+                    shape = DesignSystem.Shapes.pill,
+                    color = DesignSystem.Colors.primaryContainer
+                ) {
+                    Text(
+                        "👩 Women\'s Safety",
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        style = DesignSystem.Typography.labelLarge,
+                        color = DesignSystem.Colors.primary
+                    )
+                }
+            }
+
+            // Sort-only filter row
+            SortFilterRow(
                 selectedSort = selectedSort,
-                showUseCaseDropdown = showUseCaseDropdown,
                 showSortDropdown = showSortDropdown,
-                onUseCaseDropdownToggle = { showUseCaseDropdown = it },
                 onSortDropdownToggle = { showSortDropdown = it },
-                onUseCaseSelected = { 
-                    selectedUseCase = it
-                    showUseCaseDropdown = false
-                },
                 onSortSelected = {
                     selectedSort = it
                     showSortDropdown = false
@@ -234,8 +247,8 @@ fun NearbyIssuesScreen(
             } else if (filteredAnchors.isEmpty()) {
                 // Empty state
                 EmptyState(
-                    hasFilters = selectedUseCase != null,
-                    onClearFilters = { selectedUseCase = null }
+                    hasFilters = false,
+                    onClearFilters = { }
                 )
             } else {
                 // Issue list
@@ -268,77 +281,23 @@ fun NearbyIssuesScreen(
 }
 
 /**
- * Filter row with use case and sort dropdowns
+ * Sort-only filter row — category filter removed (women-only app)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FilterRow(
-    selectedUseCase: UseCase?,
+private fun SortFilterRow(
     selectedSort: SortOption,
-    showUseCaseDropdown: Boolean,
     showSortDropdown: Boolean,
-    onUseCaseDropdownToggle: (Boolean) -> Unit,
     onSortDropdownToggle: (Boolean) -> Unit,
-    onUseCaseSelected: (UseCase?) -> Unit,
     onSortSelected: (SortOption) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Use Case Filter
-        Box {
-            FilterChip(
-                selected = selectedUseCase != null,
-                onClick = { onUseCaseDropdownToggle(true) },
-                label = {
-                    Text(
-                        if (selectedUseCase != null) {
-                            "${selectedUseCase.icon} ${selectedUseCase.label}"
-                        } else {
-                            "All Categories ▼"
-                        }
-                    )
-                },
-                leadingIcon = if (selectedUseCase != null) {
-                    {
-                        Icon(
-                            Icons.Filled.Check,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    }
-                } else null
-            )
-            
-            DropdownMenu(
-                expanded = showUseCaseDropdown,
-                onDismissRequest = { onUseCaseDropdownToggle(false) }
-            ) {
-                DropdownMenuItem(
-                    text = { Text("All Categories") },
-                    onClick = { onUseCaseSelected(null) },
-                    leadingIcon = if (selectedUseCase == null) {
-                        { Icon(Icons.Filled.Check, contentDescription = null) }
-                    } else null
-                )
-                Divider()
-                UseCase.entries.forEach { useCase ->
-                    DropdownMenuItem(
-                        text = { Text("${useCase.icon} ${useCase.label}") },
-                        onClick = { onUseCaseSelected(useCase) },
-                        leadingIcon = if (selectedUseCase == useCase) {
-                            { Icon(Icons.Filled.Check, contentDescription = null) }
-                        } else null
-                    )
-                }
-            }
-        }
-        
-        // Sort Filter
         Box {
             FilterChip(
                 selected = true,
@@ -365,6 +324,7 @@ private fun FilterRow(
         }
     }
 }
+
 
 /**
  * Loading skeleton for cards
