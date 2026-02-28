@@ -1,0 +1,35 @@
+{
+  "scan_time": "2026-02-28T20:02:29Z",
+  "design_tokens": {},
+  "ui_screens": {
+    "PostIssueScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\PostIssueScreen.kt",
+    "PostCreationARScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\PostCreationARScreen.kt",
+    "ARViewScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ARViewScreen.kt",
+    "SurfaceAnchorScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\SurfaceAnchorScreen.kt",
+    "NearbyIssuesScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\NearbyIssuesScreen.kt",
+    "ARNavigationScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ARNavigationScreen.kt",
+    "ImpactDashboardScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ImpactDashboardScreen.kt"
+  },
+  "backend": {
+    "firestore": true,
+    "has_google_services": true,
+    "firebase_auth": false
+  },
+  "ar_components": {
+    "ImpactDashboardScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ImpactDashboardScreen.kt",
+    "DirectionArrowOverlay.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\DirectionArrowOverlay.kt",
+    "ARCoreManager.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\ARCoreManager.kt",
+    "ARViewScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ARViewScreen.kt",
+    "PostCreationARScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\PostCreationARScreen.kt",
+    "MessageCard.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\MessageCard.kt",
+    "ARNavigationScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ARNavigationScreen.kt",
+    "ARDetailSheet.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\ARDetailSheet.kt",
+    "ARModelRenderer.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\ARModelRenderer.kt",
+    "OnboardingOverlay.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\OnboardingOverlay.kt",
+    "BearingCalculator.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\BearingCalculator.kt",
+    "ARWallRenderer.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\ARWallRenderer.kt",
+    "PTopBar.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PTopBar.kt",
+    "PCard.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PCard.kt",
+    "NearbyIssuesScreen.kt": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\NearbyIssuesScreen.kt"
+  }
+}

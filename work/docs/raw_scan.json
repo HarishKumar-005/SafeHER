@@ -1,0 +1,327 @@
+[
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ai\\ContentModerationHelper.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ai\\n\\nimport android.content.Context\\nimport android.util.Log\\nimport com.google.mediapipe.tasks.core.BaseOptions"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\ARCoreManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ar\\n\\nimport android.content.Context\\nimport android.util.Log\\nimport com.google.ar.core.Config"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\ARModelRenderer.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ar\\n\\nimport android.content.Context\\n\\n/**"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\ARWallRenderer.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ar\\n\\nimport android.content.Context\\n\\n/**"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\CloudAnchorSyncManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ar\\n\\nimport com.google.ar.core.Anchor\\nimport com.google.ar.core.Session\\nimport com.google.firebase.firestore.FirebaseFirestore"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\GeospatialAnchorManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ar\\n\\nimport com.google.ar.core.Anchor\\nimport com.google.ar.core.Earth\\nimport com.google.ar.core.GeospatialPose"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ar\\VoiceGuidanceManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ar\\n\\nimport android.content.Context\\nimport android.speech.tts.TextToSpeech\\nimport android.speech.tts.UtteranceProgressListener"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\AnchorData.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport java.util.UUID\\n\\nimport kotlinx.serialization.Serializable"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\AnchorRepository.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport android.location.Location\\nimport com.phantomcrowd.utils.Logger\\n"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\FirebaseAnchorManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport android.util.Log\\nimport com.google.firebase.firestore.FirebaseFirestore\\nimport com.google.firebase.firestore.Query"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\GeofenceManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport android.content.Context\\nimport com.google.android.gms.location.Geofence\\nimport com.google.android.gms.location.GeofencingRequest"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\ImpactData.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport com.google.firebase.Timestamp\\n\\n/**"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\LocalStorageManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport android.content.Context\\nimport com.google.gson.Gson\\nimport com.google.gson.JsonSyntaxException"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\RiskScoring.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport kotlin.math.ln\\nimport kotlin.math.pow\\n"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\SOSManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport android.content.Context\\nimport android.media.AudioManager\\nimport android.media.MediaPlayer"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\SurfaceAnchor.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport com.google.firebase.firestore.DocumentId\\nimport com.google.firebase.firestore.PropertyName\\nimport java.util.UUID"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\SurfaceAnchorManager.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport android.location.Location\\nimport com.google.ar.core.Anchor\\nimport com.google.ar.core.Plane"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\data\\UseCase.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.data\\n\\nimport androidx.compose.ui.graphics.Color\\n\\n/**"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\receiver\\GeofenceReceiver.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.receiver\\n\\nimport android.content.BroadcastReceiver\\nimport android.content.Context\\nimport android.content.Intent"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\ARDetailSheet.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.animation.AnimatedVisibility\\nimport androidx.compose.animation.slideInVertically\\nimport androidx.compose.animation.slideOutVertically"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\DirectionArrowOverlay.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport android.content.Context\\nimport android.location.Location\\nimport android.os.Build"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\HeatmapLegend.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.background\\nimport androidx.compose.foundation.layout.Arrangement\\nimport androidx.compose.foundation.layout.Box"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\MessageCard.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.background\\nimport androidx.compose.foundation.layout.*\\nimport androidx.compose.foundation.shape.RoundedCornerShape"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\MiniMapOverlay.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport android.location.Location\\nimport android.util.Log\\nimport androidx.compose.foundation.Canvas"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\OnboardingOverlay.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport android.content.Context\\nimport androidx.compose.animation.*\\nimport androidx.compose.foundation.background"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PBottomNav.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.layout.size\\nimport androidx.compose.material.icons.Icons\\nimport androidx.compose.material.icons.filled.Add"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PCard.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.layout.Column\\nimport androidx.compose.foundation.layout.ColumnScope\\nimport androidx.compose.foundation.layout.fillMaxWidth"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PChip.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.background\\nimport androidx.compose.foundation.clickable\\nimport androidx.compose.foundation.layout.Box"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PDialog.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.material3.AlertDialog\\nimport androidx.compose.material3.Text\\nimport androidx.compose.material3.TextButton"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PToast.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.layout.padding\\nimport androidx.compose.material3.Snackbar\\nimport androidx.compose.material3.SnackbarData"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\PTopBar.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.material3.CenterAlignedTopAppBar\\nimport androidx.compose.material3.ExperimentalMaterial3Api\\nimport androidx.compose.material3.Text"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\components\\SeverityBadge.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.components\\n\\nimport androidx.compose.foundation.background\\nimport androidx.compose.foundation.layout.Box\\nimport androidx.compose.foundation.layout.padding"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\tabs\\MapDiscoveryTab.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.tabs\\n\\nimport android.content.Context\\nimport android.graphics.drawable.Drawable\\nimport android.location.Location"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\tabs\\NavigationTab.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.tabs\\n\\nimport android.location.Location\\nimport android.util.Log\\nimport androidx.compose.foundation.background"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\theme\\Color.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.theme\\n\\nimport androidx.compose.ui.graphics.Color\\n\\n// ═══════════════════ SafeHer AR – Unified Feminine Theme ════════════════════"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\theme\\DesignSystem.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.theme\\n\\nimport androidx.compose.animation.core.FastOutSlowInEasing\\nimport androidx.compose.animation.core.tween\\nimport androidx.compose.foundation.shape.RoundedCornerShape"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\theme\\Theme.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.theme\\n\\nimport android.app.Activity\\nimport android.os.Build\\nimport androidx.compose.foundation.isSystemInDarkTheme"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\theme\\Type.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui.theme\\n\\nimport androidx.compose.material3.Typography\\nimport androidx.compose.ui.text.TextStyle\\nimport androidx.compose.ui.text.font.Font"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ARNavigationScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.content.Context\\nimport android.hardware.Sensor\\nimport android.hardware.SensorEvent"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ARViewScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.content.Context\\nimport android.hardware.Sensor\\nimport android.hardware.SensorEvent"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\ImpactDashboardScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport androidx.compose.animation.*\\nimport androidx.compose.foundation.background\\nimport androidx.compose.foundation.clickable"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\MainActivity.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.os.Bundle\\nimport android.app.UiModeManager\\nimport androidx.activity.ComponentActivity"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\MainViewModel.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.app.Application\\nimport android.location.Location\\nimport androidx.lifecycle.AndroidViewModel"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\NearbyIssuesScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport androidx.compose.animation.*\\nimport androidx.compose.animation.core.*\\nimport androidx.compose.foundation.background"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\PostCreationARScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.widget.Toast\\nimport androidx.compose.animation.*\\nimport androidx.compose.foundation.background"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\PostIssueScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.widget.Toast\\nimport androidx.compose.foundation.layout.*\\nimport androidx.compose.material3.*"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\ui\\SurfaceAnchorScreen.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.ui\\n\\nimport android.location.Location\\nimport androidx.compose.foundation.background\\nimport androidx.compose.foundation.layout.*"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\BearingCalculator.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.util.Log\\nimport kotlin.math.atan2\\nimport kotlin.math.cos"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\Constants.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nobject Constants {\\n    const val TAG_ARCORE = \"ARCore\"\\n    const val TAG_GPS = \"GPS\""
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\DebugConfig.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\n/**\\n * Centralized debug configuration for the app.\\n * Controls verbose logging and debug features throughout the codebase."
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\GeohashingUtility.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.util.Log\\n\\n/**"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\GPSUtils.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.Manifest\\nimport android.annotation.SuppressLint\\nimport android.content.Context"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\HeatmapRenderer.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport org.osmdroid.views.MapView\\nimport org.osmdroid.views.overlay.Polygon\\nimport android.graphics.Color"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\Logger.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.util.Log\\n\\n/**"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\MinimapCalculator.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.util.Log\\nimport androidx.compose.ui.geometry.Offset\\nimport kotlin.math.cos"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\NetworkHelper.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.content.Context\\nimport android.net.ConnectivityManager\\nimport android.net.NetworkCapabilities"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\OfflineMapCache.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport com.phantomcrowd.data.AnchorData\\nimport android.content.Context\\nimport java.io.File"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\java\\com\\phantomcrowd\\utils\\PermissionHelper.kt",
+    "Extension": ".kt",
+    "FirstLines": "package com.phantomcrowd.utils\\n\\nimport android.Manifest\\nimport android.content.Context\\nimport android.content.pm.PackageManager"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\res\\drawable\\ic_launcher_icon.xml",
+    "Extension": ".xml",
+    "FirstLines": "<vector xmlns:android=\"http://schemas.android.com/apk/res/android\"\\n    android:width=\"108dp\"\\n    android:height=\"108dp\"\\n    android:viewportWidth=\"108\"\\n    android:viewportHeight=\"108\">"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\res\\layout\\view_ar_label.xml",
+    "Extension": ".xml",
+    "FirstLines": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\\n    android:id=\"@+id/ar_label_container\"\\n    android:layout_width=\"wrap_content\"\\n    android:layout_height=\"wrap_content\""
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\res\\values\\colors.xml",
+    "Extension": ".xml",
+    "FirstLines": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\\n<resources>\\n    <!-- SafeHer AR palette — XML resources for non-Compose usage -->\\n    <color name=\"safeher_primary\">#FF7C3AED</color>\\n    <color name=\"safeher_secondary\">#FFDB2777</color>"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\res\\values\\strings.xml",
+    "Extension": ".xml",
+    "FirstLines": "<resources>\\n    <string name=\"app_name\">SafeHer AR</string>\\n</resources>"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\res\\values\\themes.xml",
+    "Extension": ".xml",
+    "FirstLines": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\\n<resources>\\n    <!--\\n        SafeHer AR uses a SINGLE unified feminine theme.\\n        Same in day and night mode — soft off-white #FFF7FA background."
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\res\\values-night\\themes.xml",
+    "Extension": ".xml",
+    "FirstLines": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\\n<resources>\\n    <!--\\n        SafeHer AR uses a SINGLE unified feminine theme.\\n        Night mode overrides the window to #FFF7FA (same as day)"
+  },
+  {
+    "FullName": "D:\\Hackathons\\SafeHER\\SafeHER\\app\\src\\main\\AndroidManifest.xml",
+    "Extension": ".xml",
+    "FirstLines": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\\n    xmlns:tools=\"http://schemas.android.com/tools\">\\n\\n    <uses-permission android:name=\"android.permission.CAMERA\" />"
+  }
+]
