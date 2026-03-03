@@ -31,6 +31,14 @@ fun SeverityBadge(
         else     -> DesignSystem.Colors.neutralMuted to severityName
     }
 
+    val textColor = when (severityName.uppercase()) {
+        "URGENT" -> Color.White
+        "HIGH"   -> DesignSystem.Colors.severityHighText
+        "MEDIUM" -> DesignSystem.Colors.severityMedText
+        "LOW"    -> DesignSystem.Colors.severityLowText
+        else     -> Color.White
+    }
+
     Box(
         modifier = modifier
             .clip(DesignSystem.Shapes.pill)
@@ -41,7 +49,7 @@ fun SeverityBadge(
         Text(
             text = label,
             style = DesignSystem.Typography.labelLarge,
-            color = Color.White
+            color = textColor
         )
     }
 }

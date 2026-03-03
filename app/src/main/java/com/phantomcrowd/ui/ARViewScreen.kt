@@ -450,7 +450,7 @@ fun ARViewScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     androidx.compose.foundation.Image(
-                        painter = androidx.compose.ui.res.painterResource(id = com.phantomcrowd.R.mipmap.ic_launcher),
+                        painter = androidx.compose.ui.res.painterResource(id = com.phantomcrowd.R.drawable.ic_app_logo),
                         contentDescription = "SafeHer AR logo",
                         modifier = Modifier.size(64.dp)
                     )

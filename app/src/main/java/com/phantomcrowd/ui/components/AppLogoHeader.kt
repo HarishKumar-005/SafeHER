@@ -43,7 +43,7 @@ fun AppLogoHeader(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Image(
-                painter = painterResource(id = R.mipmap.ic_launcher),
+                painter = painterResource(id = R.drawable.ic_app_logo),
                 contentDescription = "SafeHer AR logo",
                 modifier = Modifier.size(iconSize)
             )

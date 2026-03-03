@@ -54,8 +54,11 @@ object DesignSystem {
 
         // Severity chip colours (background fills; use matching *Text colour for labels)
         val severityHigh     = SeverityHighBg
+        val severityHighText = SeverityHighText
         val severityMedium   = SeverityMedBg
+        val severityMedText  = SeverityMedText
         val severityLow      = SeverityLowBg
+        val severityLowText  = SeverityLowText
 
         // Heatmap
         val heatmapRed       = HeatmapRed

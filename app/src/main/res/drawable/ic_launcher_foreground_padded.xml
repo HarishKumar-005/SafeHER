@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon FOREGROUND for SafeHer AR.
+
+  Android adaptive icons use a 108dp × 108dp canvas. The launcher applies
+  a shape mask (circle, squircle, rounded-square, etc.) and only guarantees
+  that the inner 66dp × 66dp "safe zone" is always visible — anything
+  outside can be clipped.
+
+  Strategy: wrap the PNG in a layer-list with ~18 % inset on every side so
+  the artwork sits fully inside the safe zone regardless of launcher shape.
+
+  18 % of 108 dp ≈ 19 dp padding → effective artwork area ≈ 70 dp (safe ✓)
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="19dp"
+        android:top="19dp"
+        android:right="19dp"
+        android:bottom="19dp"
+        android:drawable="@mipmap/ic_launcher_foreground" />
+</layer-list>

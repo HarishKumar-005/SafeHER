@@ -530,17 +530,22 @@ fun EnhancedIssueCard(
                         RiskLevel.MEDIUM -> DesignSystem.Colors.severityMedium
                         RiskLevel.LOW -> DesignSystem.Colors.severityLow
                     }
+                    val textColor = when (riskLevel) {
+                        RiskLevel.HIGH -> DesignSystem.Colors.severityHighText
+                        RiskLevel.MEDIUM -> DesignSystem.Colors.severityMedText
+                        RiskLevel.LOW -> DesignSystem.Colors.severityLowText
+                    }
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(6.dp))
-                            .background(riskColor.copy(alpha = 0.15f))
+                            .background(riskColor.copy(alpha = 0.5f))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
                             riskLevel.shortLabel,
                             style = DesignSystem.Typography.labelLarge,
                             fontWeight = FontWeight.Bold,
-                            color = riskColor
+                            color = textColor
                         )
                     }
                 }
