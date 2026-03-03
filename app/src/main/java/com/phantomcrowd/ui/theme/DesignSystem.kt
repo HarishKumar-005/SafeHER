@@ -17,8 +17,8 @@ import com.phantomcrowd.R
 /**
  * SafeHer AR Design System — Premium Feminine Safety Theme
  *
- * Unified neutral-feminine palette: soft off-white backgrounds,
- * mauve pink accents, no aggressive contrast, no dark modes.
+ * Dual-palette (light + dark), WCAG 2.1 AA verified.
+ * Soft off-white / deep violet-black backgrounds, mauve pink accents.
  * Emotionally safe, calm, spacious, production-ready.
  *
  * 8dp spacing grid • 14dp card radius • 20dp button radius
@@ -38,11 +38,11 @@ object DesignSystem {
         val onSecondary      = OnSecondary          // #0F1724
 
         // Surfaces
-        val background       = BackgroundLight      // #FFF7FA
-        val surface          = SurfaceWhite         // #FFFFFF
-        val surfaceVariant   = SurfaceVariantLight  // #F9E4EF
-        val onSurface        = OnSurfaceDark        // #0F1724
-        val inverseOnSurface = InverseOnSurface     // #FFF7FA
+        val background       = BackgroundLight       // #FFF7FA
+        val surface          = SurfaceLight          // #FFFFFF
+        val surfaceVariant   = SurfaceVariantLight   // #F2E5EE
+        val onSurface        = OnSurfaceLight        // #0F1724
+        val inverseOnSurface = InverseOnSurfaceLight // #FFF7FA
 
         // Selected state
         val selectedCard     = SurfaceVariantLight  // #F9E4EF — gentle pink fill
@@ -52,10 +52,10 @@ object DesignSystem {
         val success          = SuccessGreen         // #3FB28F
         val warning          = WarningAmber         // #F6C85F
 
-        // Severity
-        val severityHigh     = SeverityHigh
-        val severityMedium   = SeverityMedium
-        val severityLow      = SeverityLow
+        // Severity chip colours (background fills; use matching *Text colour for labels)
+        val severityHigh     = SeverityHighBg
+        val severityMedium   = SeverityMedBg
+        val severityLow      = SeverityLowBg
 
         // Heatmap
         val heatmapRed       = HeatmapRed
@@ -69,7 +69,7 @@ object DesignSystem {
         // Neutral / Utility
         val neutralMuted     = NeutralMuted         // #6B7280
         val outline          = OutlineLight         // #EAE6E9
-        val link             = LinkBlue
+        val link             = LinkColor
 
         // Navigation
         val navSurface       = NavSurface           // #FFF7FA

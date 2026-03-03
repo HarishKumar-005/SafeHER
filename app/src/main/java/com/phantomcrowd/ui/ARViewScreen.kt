@@ -449,7 +449,11 @@ fun ARViewScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text("🛡️", fontSize = 48.sp)
+                    androidx.compose.foundation.Image(
+                        painter = androidx.compose.ui.res.painterResource(id = com.phantomcrowd.R.mipmap.ic_launcher),
+                        contentDescription = "SafeHer AR logo",
+                        modifier = Modifier.size(64.dp)
+                    )
                     Text(
                         "SafeHer AR View",
                         style = DesignSystem.Typography.headlineMedium,

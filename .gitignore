@@ -1,41 +1,27 @@
 # =====================================================
-# PHANTOM CROWD - ANDROID GITIGNORE
+# SafeHer AR — Android .gitignore
+# Judges see: source code, docs, README, resources
 # =====================================================
 
-# =====================================================
-# BUILD OUTPUTS (Never commit these)
-# =====================================================
-
-# Built application files
+# ─── BUILD OUTPUTS ────────────────────────────────
 *.apk
 *.ap_
 *.aab
-
-# Files for the ART/Dalvik VM
 *.dex
-
-# Java class files
 *.class
-
-# Generated files
 bin/
 gen/
 out/
-
-# Gradle build output
-.gradle/
 build/
+.gradle/
 app/build/
 */build/
 
-# =====================================================
-# LOCAL CONFIGURATION (Contains sensitive data)
-# =====================================================
-
-# Local configuration file (SDK path, API keys, etc)
+# ─── LOCAL / SECRET FILES ─────────────────────────
+# SDK path & API keys — never commit
 local.properties
 
-# Keystore files (VERY SENSITIVE - never commit!)
+# Keystore files — NEVER commit signing keys
 *.jks
 *.keystore
 *.pem
@@ -44,124 +30,82 @@ local.properties
 release-key.jks
 debug.keystore
 
-# Google Services (contains API keys)
+# Google Services — judges should use their own Firebase project
+# (see work/docs/firebase-swap-instructions.md)
 google-services.json
 
-# =====================================================
-# IDE SETTINGS (Developer-specific)
-# =====================================================
-
-# IntelliJ IDEA / Android Studio
+# ─── IDE / EDITOR SETTINGS ────────────────────────
 .idea/
 *.iml
 *.iws
 *.ipr
-
-# VS Code
 .vscode/
-
-# Eclipse
 .classpath
 .project
 .settings/
-
-# NetBeans
 nbproject/private/
+*.suo
+*.user
 
-# =====================================================
-# ANDROID STUDIO SPECIFIC
-# =====================================================
-
-# Android Studio Navigation editor temp files
+# ─── ANDROID STUDIO SPECIFIC ──────────────────────
 .navigation/
-
-# Android Studio captures folder
 captures/
-
-# External native build folder
 .cxx/
 *.cxx/
 .externalNativeBuild/
 
-# Proguard folder
-proguard/
+# ─── RAW / STAGING ASSET FOLDERS ──────────────────
+# These are the original icon export folders — the final icons
+# are already in the correct res/mipmap-* folders
+app/src/main/AppIcons/
+app/src/main/res/AppIcons/
 
-# =====================================================
-# LOG AND TEMP FILES
-# =====================================================
+# ─── AGENT WORK ARTIFACTS (internal only) ─────────
+# These are refactor logs, workspace scans, and internal docs
+# produced by the AI agent — not relevant to judges.
+work/logs/
+work/memory/
+work/artifacts/
+work/reports/
+# Keep work/docs/ — it has firebase & deployment guides judges may read
 
-# Log Files
-*.log
-
-# Profiling
-*.hprof
-
-# Crash logs
-hs_err_pid*
-replay_pid*
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# =====================================================
-# OS-SPECIFIC FILES (System junk)
-# =====================================================
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# Linux
-*~
-.directory
-
-# =====================================================
-# PACKAGE FILES (Don't commit archives)
-# =====================================================
-
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.rar
-*.7z
-
-# =====================================================
-# DEBUG/TEST FILES
-# =====================================================
-
-# Build log files (created during debugging)
-*.txt
-!README.txt
-!docs/*.txt
-
-# Test outputs
-/test-results/
-/test-reports/
-
-# =====================================================
-# MISCELLANEOUS WEB FILES (Not part of Android project)
-# =====================================================
-
-# If these are not needed for your project
+# ─── WEB PROTOTYPE FILES ──────────────────────────
+# These were part of an early prototype, not the Android app
 index.html
 script.js
 styles.css
 
-# =====================================================
-# FIREBASE (if you need to exclude emulator data)
-# =====================================================
+# ─── OS JUNK ──────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*~
+.directory
 
-.firebase/
+# ─── TEMP / CRASH / PROFILE FILES ─────────────────
+*.log
+*.hprof
+hs_err_pid*
+replay_pid*
+.mtj.tmp/
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+.firebase/
+
+# ─── RAW JSON SCAN FILES (agent-generated) ────────
+work/docs/raw_scan.json
+work/docs/workspace-analysis.json
+
+# ─── ARCHIVES ─────────────────────────────────────
+*.zip
+*.tar.gz
+*.rar
+*.7z
+# Allow the release package if present
+!work/release/*.zip

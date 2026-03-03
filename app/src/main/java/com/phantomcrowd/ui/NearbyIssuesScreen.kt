@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.phantomcrowd.data.*
 import com.phantomcrowd.data.RiskLevel
 import com.phantomcrowd.data.RiskScoring
+import com.phantomcrowd.ui.components.AppLogoHeader
 import com.phantomcrowd.ui.components.SeverityBadge
 import com.phantomcrowd.ui.theme.DesignSystem
 import kotlinx.coroutines.launch
@@ -143,32 +144,23 @@ fun NearbyIssuesScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            // SafeHer AR Header
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    "🛡️ SafeHer AR",
-                    style = DesignSystem.Typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = DesignSystem.Colors.primary
-                )
-                Surface(
-                    shape = DesignSystem.Shapes.pill,
-                    color = DesignSystem.Colors.primaryContainer
-                ) {
-                    Text(
-                        "👩 Women\'s Safety",
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        style = DesignSystem.Typography.labelLarge,
-                        color = DesignSystem.Colors.primary
-                    )
+            // SafeHer AR Header with logo
+            AppLogoHeader(
+                trailingContent = {
+                    Surface(
+                        shape = DesignSystem.Shapes.pill,
+                        color = DesignSystem.Colors.primaryContainer
+                    ) {
+                        Text(
+                            "👩 Women's Safety",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            style = DesignSystem.Typography.labelLarge,
+                            color = DesignSystem.Colors.primary
+                        )
+                    }
                 }
-            }
+            )
+
 
             // Sort-only filter row
             SortFilterRow(

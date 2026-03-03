@@ -12,4 +12,6 @@
     <color name="safeher_sos">#FFDC2626</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Adaptive icon background — white so the pink shield artwork sits cleanly -->
+    <color name="ic_launcher_background">#FFFFFFFF</color>
 </resources>

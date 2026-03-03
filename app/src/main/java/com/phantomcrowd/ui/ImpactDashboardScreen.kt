@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.phantomcrowd.data.*
+import com.phantomcrowd.ui.components.AppLogoHeader
 import com.phantomcrowd.ui.theme.DesignSystem
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,24 +89,20 @@ fun ImpactDashboardScreen(viewModel: MainViewModel) {
             ) {
                 // ─── Header ─────────────────────────────────────────
                 item {
-                    Text(
-                        "🛡️ SafeHer Impact",
-                        style = DesignSystem.Typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = DesignSystem.Colors.onSurface
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    AppLogoHeader(iconSize = 28.dp)
                     Text(
                         "How SafeHer AR is making your area safer for women",
                         style = DesignSystem.Typography.bodyMedium,
-                        color = DesignSystem.Colors.neutralMuted
+                        color = DesignSystem.Colors.neutralMuted,
+                        modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp)
                     )
                     // Last synced
                     val sdf = remember { SimpleDateFormat("h:mm a", Locale.getDefault()) }
                     Text(
                         "Last synced: ${sdf.format(Date(stats.lastSyncedMs))}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        modifier = androidx.compose.ui.Modifier.padding(horizontal = 16.dp)
                     )
                 }
 

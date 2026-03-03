@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon for SafeHer AR.
+  The foreground uses the full-bleed PNG from each mipmap density bucket.
+  The background is a solid warm-white so the icon reads well on any launcher shape.
+  Safe zone = centre 66dp (of the 108dp canvas) — icon artwork stays within this.
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>

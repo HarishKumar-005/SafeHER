@@ -1,0 +1,50 @@
+# SafeHer AR — Firestore Composite Indexes
+
+These indexes are recommended for optimal query performance on the free Spark plan.
+Add them in Firebase Console → Firestore → Indexes → Composite.
+
+## Collection: `issues`
+
+| Fields                          | Order             | Use Case                             |
+|---------------------------------|-------------------|--------------------------------------|
+| `geohash`, `timestamp`          | ASC, DESC         | Nearby issues sorted by newest first |
+| `category`, `timestamp`         | ASC, DESC         | Filter by category + sort by time    |
+| `severity`, `timestamp`         | ASC, DESC         | Filter by severity + sort by time    |
+| `use_case`, `timestamp`         | ASC, DESC         | Filter by use case + sort by time    |
+| `status`, `timestamp`           | ASC, DESC         | Filter resolved/pending + sort       |
+
+## Collection: `surface_anchors`
+
+| Fields                          | Order             | Use Case                             |
+|---------------------------------|-------------------|--------------------------------------|
+| `geohash`, `timestamp`          | ASC, DESC         | Nearby surface anchors by time       |
+
+## Collection: `authority_actions`
+
+| Fields                          | Order             | Use Case                             |
+|---------------------------------|-------------------|--------------------------------------|
+| `issueId`, `timestamp`          | ASC, DESC         | Actions for a specific issue         |
+| `actionType`, `timestamp`       | ASC, DESC         | Filter by action type + sort         |
+
+## Collection: `sos_events` (future)
+
+| Fields                          | Order             | Use Case                             |
+|---------------------------------|-------------------|--------------------------------------|
+| `geohash`, `timestamp`          | ASC, DESC         | Nearby SOS events by time            |
+
+---
+
+## Single-Field Indexes (Auto-Created)
+
+Firestore automatically creates single-field indexes for every field.
+No manual configuration needed for:
+- `timestamp` (all collections)
+- `geohash` (all collections)
+- `category`, `severity`, `status`, `use_case` (issues)
+
+## Notes
+
+- All queries use the free Spark plan (50K reads/day, 20K writes/day)
+- Composite indexes are free to create — only reads/writes cost quota
+- The `geohash` field enables efficient location-based queries without
+  expensive GeoPoint range queries
