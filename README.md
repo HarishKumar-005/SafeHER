@@ -1,260 +1,98 @@
-# SafeHer AR
-### Real-World Safety Visibility for Women
-
-SafeHer AR is a lightweight, sensor-driven augmented reality platform that projects community-verified safety markers directly into the user’s camera view.
-
-It replaces map-based hazard browsing with spatial overlays that preserve situational awareness while delivering contextual, actionable safety intelligence.
+# #75HER Project: SafeHer AR
+**One-line Value Proposition:** Women navigating urban environments get real-time, hands-free spatial safety alerts instantly under the constraint of preserving physical situational awareness.
 
 ---
 
-## Problem
-
-Women navigating urban or unfamiliar environments frequently rely on 2D navigation tools that require downward attention. This interaction reduces environmental awareness at moments when alertness is critical.
-
-Additionally, traditional mapping platforms lack hyper-local, real-time safety context such as harassment zones, poorly lit streets, isolated walkways, or emergency resource gaps.
-
----
-
-## Solution
-
-SafeHer AR bridges digital safety data and physical space.
-
-Using device heading, GPS position, and bearing calculations, safety anchors are projected into the camera view in real time.
-
-Each marker is:
-- Spatially anchored via ARCore
-- Distance-aware  
-- Severity-coded  
-- Collision-adjusted  
-- Context-rich (supports long-form descriptions)  
-
-High-severity anchors can trigger optional Text-to-Speech and haptic alerts, enabling hands-free hazard awareness.
+## 🎯 Problem Statement
+- **Who:** Women navigating urban environments, especially during night travel or solo transit.
+- **Problem:** Reduced situational awareness caused by downward-focused 2D navigation tools, compounded by the absence of localized, real-time safety intelligence (e.g. poorly lit streets, harassment zones).
+- **Impact:** Decreased environmental awareness at moments when alertness is critical, increasing transit vulnerability.
 
 ---
 
-## 4-Line Problem Frame
+## ✨ Solution Overview
+**What we built:** SafeHer AR is a lightweight, sensor-driven augmented reality platform that projects community-verified safety markers directly into the user’s camera view. It replaces traditional map-based hazard browsing with spatial overlays that preserve situational awareness while delivering contextual safety intelligence.
 
-- **User:** Women navigating urban environments, especially during night travel or solo transit.
-- **Problem:** Reduced situational awareness caused by downward-focused navigation and absence of localized safety intelligence.
-- **Constraints:** Must run on commodity Android hardware, preserve anonymity, minimize battery consumption, and remain legible in varied lighting conditions.
-- **Success Test:** A user identifies a high-risk anchor within 3 seconds in AR view and receives an optional audible/haptic alert without breaking visual awareness.
-
----
-
-## 3-Line Pitch
-
-**See risk before you reach it.**  
-SafeHer AR projects verified safety alerts directly into your real-world view using lightweight augmented reality.  
-Move confidently.
+**Key Features:**
+- **ARCore Spatial Overlay:** High-precision plane detection and spatial anchoring securely locks augmented reality markers to real-world environments so users can see risks before they reach them.
+- **Hands-Free Risk Alerts:** Configurable proximity thresholds trigger optional Text-to-Speech (TTS) announcements and haptic feedback alerts, enabling hands-free hazard awareness without looking at a screen.
+- **Contextual Detail System:** Expandable, collision-aware bottom sheets provide long-form incident context (~300 words), severity indicators, and immediate action triggers (Navigate/SOS).
 
 ---
 
-## Core Capabilities
+## 🚀 Quick Start & Demo Path
 
-### ARCore Spatial Overlay
-- ARCore SceneView for environment understanding
-- High-precision plane detection and spatial anchoring
-- Haversine distance mapped to 3D world space
-- Stable augmented reality markers that lock to real-world environments
+### Installation (1 Command)
+**Requirements:** Android Studio, Android SDK 33+, Physical Android device (recommended for sensor accuracy).
 
-### Collision-Aware Rendering
-- Radial push algorithm prevents overlap
-- Distance-based scaling hierarchy
-- Performance-stable under dense anchor clustering
+```bash
+# Clone the repository
+git clone https://github.com/HarishKumar-005/SafeHER.git && cd SafeHER
 
-### Contextual Detail System
-- Expandable bottom sheet
-- Long-form context (~300 words)
-- Severity indicators and timestamps
-- Action triggers (SOS / Navigation)
-
-### Anonymous Reporting
-- UUID anchor creation
-- No public storage of personal identifiers
-- Firebase Auth write validation
-- Firestore real-time sync
-
-### Hands-Free Risk Alerts
-- Android TextToSpeech integration
-- Haptic feedback triggers
-- Configurable proximity thresholds
-
-### Safety Heatmap & Impact Metrics
-- Geospatial density visualization
-- Community engagement insights
-- Risk normalization scoring
-
----
-
-## Architecture Overview
-
-SafeHer AR follows a modern MVVM architecture using Jetpack Compose.
-
-### System Flow
-
-```text
-User Device
-├── ARCore (Spatial Anchoring & SceneView)
-├── Environmental Mapping
-├── FusedLocationProvider (GPS)
-│
-▼
-ARViewScreen
-├── Bearing + Distance Calculations
-├── Collision Adjustment
-├── Distance Scaling
-│
-▼
-ViewModel (StateFlow)
-│
-▼
-Firestore (Anchors)
-└── Firebase Auth (Validation)
+# Build and install the debug application
+./gradlew clean assembleDebug && ./gradlew installDebug
 ```
 
-**Key Logic Modules:**
-- `ARViewScreen.kt` — AR projection & collision logic  
-- `RiskScoring.kt` — Anchor prioritization  
-- `PostCreationARScreen.kt` — Reporting flow  
-- `ARDetailSheet.kt` — Context interface  
+**Access:** The app will be installed on your connected Android device. *(Ensure `google-services.json` is placed in `/app` for Firebase)*
+
+### 60-Second Demo Path
+- **Step 1:** Launch app and open AR tab → Camera activates and projects floating 3D markers for nearby hazards.
+- **Step 2:** Physically walk towards a "HIGH" severity marker → App automatically vibrates and reads the hazard aloud via TTS.
+- **Step 3:** Tap a marker → Bottom sheet expands providing full incident context and an SOS button.
+
+📹 **Demo Video:** `[Insert Link]` | 🔗 **Live Demo (APK):** [Download SafeHER-AR.apk](https://github.com/HarishKumar-005/SafeHER/releases/download/v1.0.0/SafeHER-AR.apk)
 
 ---
 
-## Technical Stack
+## 🏗️ Technical Architecture
 
-- Kotlin
-- Jetpack Compose (Material 3)
-- Google ARCore
-- CameraX
-- Google Play Services Location
-- Firebase Authentication
-- Firebase Firestore
-- Android TextToSpeech API
-
-Dependency versions are declared in `build.gradle` files.
+**Components:**
+- **Frontend:** Jetpack Compose (Material 3) — Declarative, StateFlow-based reactive UI.
+- **Backend / Database:** Firebase Firestore & Auth — Real-time spatial geohash bounding queries and anonymous write validation.
+- **AR Engine:** Google ARCore + CameraX + SensorManager — High-precision plane detection and bearing difference mapping.
+- **AI/ML Integration:** (Optional track / not deeply focused, uses device-side risk scoring normalization).
 
 ---
 
-## Build & Run (Clean Start)
+## 📋 Project Logs & Documentation
 
-### Requirements
-- Android Studio
-- Android SDK 33+
-- Physical Android device recommended
-
-### Setup
-
-1. Add your Firebase configuration:
-   Place your `google-services.json` file into the `app/` directory (not tracked in version control).
-
-2. Build and install the application:
-   ```bash
-   ./gradlew clean assembleDebug
-   ./gradlew installDebug
-   ```
-
-**APK output:**
-`app/build/outputs/apk/debug/app-debug.apk`
-
-Core functionality does not require login for evaluation.
-
----
-
-## Decision Log
-
-- **Google ARCore for True Spatial Anchoring**
-  Selected ARCore for robust environmental tracking and accurate 3D marker placement, ensuring safety alerts remain stable and locked to the real world even while moving.
-- **Dynamic 3D Screen Projection**
-  Ensures deeply immersive performance and contextual depth perception on supported hardware.
-- **Custom Collision Algorithm**
-  Prevents label stacking in dense clusters, maintaining legibility.
-- **Light Translucent AR Cards**
-  Selected for consistent contrast against dynamic camera backgrounds.
-- **Anonymous Anchor Model**
-  Eliminates exposure of personally identifiable data.
-
----
-
-## Risk Log
-
-| Risk | Impact | Mitigation |
+| Log Type | Purpose | Link to Documentation |
 |---|---|---|
-| Sensor drift | Marker misalignment | Heading smoothing + recalibration |
-| False reporting | Data integrity | Vote decay + validation rules |
-| Visual clutter | Reduced clarity | Collision push algorithm |
+| **Decision Log** | Technical choices & tradeoffs (e.g. ARCore integration vs 2D Projection). | [docs/DECISION_LOG.md](https://github.com/HarishKumar-005/SafeHER/blob/main/docs/DECISION_LOG.md) |
+| **Risk Log** | Issues caught & mitigated (e.g. Sensor drift fixed by smoothing recalibration/Collision algorithm). | [docs/RISK_LOG.md](https://github.com/HarishKumar-005/SafeHER/blob/main/docs/RISK_LOG.md) |
+| **Evidence Log** | Sources (UN Women Safe Cities), assets, & attributions. | [docs/EVIDENCE_LOG.md](https://github.com/HarishKumar-005/SafeHER/blob/main/docs/EVIDENCE_LOG.md) |
 
 ---
 
-## Evidence & Research Basis
+## 🧪 Testing & Known Issues
 
-| Source | Relevance |
-|---|---|
-| UN Women – Safe Cities Initiative | Highlights mobility safety gaps affecting women globally |
-| National Institute of Justice – Situational Awareness Studies | Demonstrates risk associated with attention diversion in public spaces |
-| Android Sensor Documentation | Confirms heading accuracy limitations and mitigation techniques |
-| Human-Computer Interaction Research on AR Overlays | Supports spatial cue integration improving contextual awareness |
+- **Test Results:** Unit tests passing (RiskScoring/State).
+- **Known Issue:** Compass interference can occur in high electromagnetic environments, causing slight marker misalignment.
+- **Next Step:** Advanced plane occlusion and mesh mapping using newer ARCore Depth APIs to realistically hide markers behind physical buildings.
 
 ---
 
-## Accessibility & Integrity
+## 👥 Team & Acknowledgments
 
-- **Accessibility Checks Passed:** Capable of passing Grade-8 reading level checks, utilizing proper descriptive Alt-Text in submissions, and inclusive of video captions for demo functionality.
-- Optional Text-to-Speech alerts
-- Haptic reinforcement
-- Compose semantic labeling
-- No public PII storage
-- No exposed secrets in repository
+**Team Name:** SafeHer Check
 
----
+| Name | Role | GitHub | LinkedIn |
+|---|---|---|---|
+| **Harish Kumar S P** | Android/AR Developer | [@HarishKumar-005](https://github.com/HarishKumar-005) | `[Profile Link]` |
+| **Akshaya S** | UI/UX & Data | [@akshaya12406-byte](https://github.com/akshaya12406-byte) | `[Profile Link]` |
 
-## Known Limitations & Future Work
-
-- Requires ARCore-compatible hardware for full spatial tracking
-- Advanced plane occlusion and mesh mapping (planned feature)
-- Advanced moderation tooling planned
-- Extended analytics dashboard for community administrators
+**Special thanks to:** CreateHER Fest, #75HER Mentors, and Google for Android.
 
 ---
 
-## UN Sustainable Development Goals
+## 📄 License & Attributions
 
-- **SDG 5** — Gender Equality
-- **SDG 11** — Sustainable Cities & Communities
+**Project License:** MIT License
 
-SafeHer AR supports safer mobility through spatially contextualized safety intelligence.
+- **Google Play Services Location:** Apache 2.0 | [Link](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary)
+- **Google ARCore:** Apache 2.0 | [Link](https://developers.google.com/ar)
+- **Firebase:** Apache 2.0 | [Link](https://firebase.google.com/)
+- **Google Fonts (Poppins, Inter):** SIL Open Font License | [Link](https://fonts.google.com/)
+- **Material Icons:** Apache 2.0 | [Link](https://fonts.google.com/icons)
 
----
-
-## License
-
-**MIT License**
-
----
-
-## Credits & Attribution
-
-- **Map Data & Geocoding:** [Google Play Services Location](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary)
-- **AR/Spatial Mapping:** [Google ARCore](https://developers.google.com/ar)
-- **Backend & Auth:** [Firebase](https://firebase.google.com/)
-- **Typography:** [Google Fonts (Poppins, Inter)](https://fonts.google.com/)
-- **Icons:** Material Icons by Google
-
----
-
-## Devpost Submission Checklist
-
-> **Required Links for Submission:**
-- [ ] **Demo Video Link:** `[PASTE_YOUTUBE_LINK_HERE]`
-- [x] **Working Prototype (APK):** [Download SafeHER-AR.apk](https://github.com/HarishKumar-005/SafeHER/releases/download/v1.0.0/SafeHER-AR.apk)
-
----
-
-## Authors
-
-- **Harish Kumar S P**
-  - GitHub: [@HarishKumar-005](https://github.com/HarishKumar-005)
-  - Email: [harishkumar.sp5511@gmail.com](mailto:harishkumar.sp5511@gmail.com)
-
-- **Akshaya S**
-  - GitHub: [@akshaya12406-byte](https://github.com/akshaya12406-byte)
-  - Email: [akshaya12406@gmail.com](mailto:akshaya12406@gmail.com)
+*Built with ❤️ for #75HER Challenge | CreateHER Fest 2026.*
