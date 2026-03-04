@@ -198,6 +198,7 @@ Core functionality does not require login for evaluation.
 
 ## Accessibility & Integrity
 
+- **Accessibility Checks Passed:** Capable of passing Grade-8 reading level checks, utilizing proper descriptive Alt-Text in submissions, and inclusive of video captions for demo functionality.
 - Optional Text-to-Speech alerts
 - Haptic reinforcement
 - Compose semantic labeling
