@@ -144,10 +144,14 @@ Dependency versions are declared in `build.gradle` files.
 
 ### Setup
 
-```bash
-./gradlew clean assembleDebug
-./gradlew installDebug
-```
+1. Add your Firebase configuration:
+   Place your `google-services.json` file into the `app/` directory (not tracked in version control).
+
+2. Build and install the application:
+   ```bash
+   ./gradlew clean assembleDebug
+   ./gradlew installDebug
+   ```
 
 **APK output:**
 `app/build/outputs/apk/debug/app-debug.apk`
@@ -223,6 +227,16 @@ SafeHer AR supports safer mobility through spatially contextualized safety intel
 ## License
 
 **MIT License**
+
+---
+
+## Credits & Attribution
+
+- **Map Data & Geocoding:** [Google Play Services Location](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary)
+- **AR/Spatial Mapping:** [Google ARCore](https://developers.google.com/ar)
+- **Backend & Auth:** [Firebase](https://firebase.google.com/)
+- **Typography:** [Google Fonts (Poppins, Inter)](https://fonts.google.com/)
+- **Icons:** Material Icons by Google
 
 ---
 
