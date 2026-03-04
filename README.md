@@ -78,8 +78,8 @@ git clone https://github.com/HarishKumar-005/SafeHER.git && cd SafeHER
 
 | Name | Role | GitHub | LinkedIn |
 |---|---|---|---|
-| **Harish Kumar S P** | Android/AR Developer | [@HarishKumar-005](https://github.com/HarishKumar-005) | `[Profile Link]` |
-| **Akshaya S** | UI/UX & Data | [@akshaya12406-byte](https://github.com/akshaya12406-byte) | `[Profile Link]` |
+| **Akshaya S** | Lead AR Developer & Product Lead - ARCore experience, UX, product vision | [@akshaya12406-byte](https://github.com/akshaya12406-byte) | [LinkedIn](https://www.linkedin.com/in/akshaya-sivakumar-97a1652b4) |
+| **Harish Kumar S P** | AR/Android Engineer - ARCore, Android app, Firebase backend | [@HarishKumar-005](https://github.com/HarishKumar-005) | [LinkedIn](https://www.linkedin.com/in/harish-kumar-sp-hk120519) |
 
 **Special thanks to:** CreateHER Fest, #75HER Mentors, and Google for Android.
 
