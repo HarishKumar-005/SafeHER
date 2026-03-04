@@ -22,6 +22,7 @@ SafeHer AR bridges digital safety data and physical space.
 Using device heading, GPS position, and bearing calculations, safety anchors are projected into the camera view in real time.
 
 Each marker is:
+- Spatially anchored via ARCore
 - Distance-aware  
 - Severity-coded  
 - Collision-adjusted  
@@ -50,11 +51,11 @@ Move confidently.
 
 ## Core Capabilities
 
-### Sensor-Based AR Overlay
-- CameraX preview stream
-- SensorManager (magnetometer + accelerometer)
-- Haversine distance + bearing math
-- 2D screen-space projection (no ARCore dependency)
+### ARCore Spatial Overlay
+- ARCore SceneView for environment understanding
+- High-precision plane detection and spatial anchoring
+- Haversine distance mapped to 3D world space
+- Stable augmented reality markers that lock to real-world environments
 
 ### Collision-Aware Rendering
 - Radial push algorithm prevents overlap
@@ -93,8 +94,8 @@ SafeHer AR follows a modern MVVM architecture using Jetpack Compose.
 
 ```text
 User Device
-├── CameraX (Live Preview)
-├── SensorManager (Heading)
+├── ARCore (Spatial Anchoring & SceneView)
+├── Environmental Mapping
 ├── FusedLocationProvider (GPS)
 │
 ▼
@@ -123,8 +124,8 @@ Firestore (Anchors)
 
 - Kotlin
 - Jetpack Compose (Material 3)
+- Google ARCore
 - CameraX
-- SensorManager
 - Google Play Services Location
 - Firebase Authentication
 - Firebase Firestore
@@ -157,10 +158,10 @@ Core functionality does not require login for evaluation.
 
 ## Decision Log
 
-- **CameraX + SensorManager instead of ARCore**
-  Reduces battery consumption and broadens device compatibility while meeting 2D overlay requirements.
-- **2D Screen Projection over 3D Anchoring**
-  Ensures deterministic performance and consistent alignment on mid-range hardware.
+- **Google ARCore for True Spatial Anchoring**
+  Selected ARCore for robust environmental tracking and accurate 3D marker placement, ensuring safety alerts remain stable and locked to the real world even while moving.
+- **Dynamic 3D Screen Projection**
+  Ensures deeply immersive performance and contextual depth perception on supported hardware.
 - **Custom Collision Algorithm**
   Prevents label stacking in dense clusters, maintaining legibility.
 - **Light Translucent AR Cards**
@@ -203,8 +204,8 @@ Core functionality does not require login for evaluation.
 
 ## Known Limitations & Future Work
 
-- Compass interference in high electromagnetic environments
-- No ARCore plane anchoring (intentional performance tradeoff)
+- Requires ARCore-compatible hardware for full spatial tracking
+- Advanced plane occlusion and mesh mapping (planned feature)
 - Advanced moderation tooling planned
 - Extended analytics dashboard for community administrators
 
