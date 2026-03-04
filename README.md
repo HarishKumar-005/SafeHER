@@ -244,7 +244,7 @@ SafeHer AR supports safer mobility through spatially contextualized safety intel
 
 > **Required Links for Submission:**
 - [ ] **Demo Video Link:** `[PASTE_YOUTUBE_LINK_HERE]`
-- [ ] **Working Prototype (APK):** `https://github.com/HarishKumar-005/SafeHER/releases/download/v1.0.0/SafeHER-AR.apk`
+- [x] **Working Prototype (APK):** [Download SafeHER-AR.apk](https://github.com/HarishKumar-005/SafeHER/releases/download/v1.0.0/SafeHER-AR.apk)
 
 ---
 
